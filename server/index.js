@@ -5,10 +5,10 @@ import path from 'path'
 const app = express()
 
 app.use(bodyParser.json())
-app.use(express.static(path.join(__dirname, 'dist')))
+app.use(express.static(path.join(__dirname, '../dist')))
 
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'dist/index.html'))
+  res.sendFile(path.join(__dirname, '../dist/index.html'))
 })
 
 app.use((req, res) => res.status(404).send('Not found'))
