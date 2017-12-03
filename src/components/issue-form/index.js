@@ -15,7 +15,7 @@ import Grid from 'material-ui/Grid'
 import styles from './index.scss'
 import IconButton from 'material-ui/IconButton'
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input'
-import humanizeLocation from '../../lib/humanize-location'
+import { humanizeLocation } from '../../lib/location'
 
 const IssueForm = ({
   location,

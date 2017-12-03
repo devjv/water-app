@@ -1,14 +1,14 @@
 const initialReports = {
   '0': {
     id: '0',
-    location: [-1.3584125, 36.7290792],
+    location: {lon: 36.7290792, lat: -1.3584125},
     status: 0,
     description: 'Pretty bad leak',
     priority: 1
   },
   '1': {
     id: '1',
-    location: [-1.2921, 36.8],
+    location: {lon: 36.8, lat: -1.2921},
     status: 1,
     description: 'Leaky faucet',
     priority: 0
