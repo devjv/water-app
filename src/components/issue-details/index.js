@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { InputLabel } from 'material-ui/Input'
 import Grid from 'material-ui/Grid'
 import { FormControl, FormHelperText } from 'material-ui/Form'
@@ -8,42 +9,49 @@ import IssueStatus from '../issue-status'
 import Button from 'material-ui/Button'
 import moment from 'moment'
 
-const IssueDetails = ({
-  location,
-  description,
-  status,
-  canDelete,
-  updatedAt
-}) => (
-  <div>
-    <Grid container justify='center'>
-      <Grid item xs={10}>
-        <FormControl margin='normal' fullWidth>
-          <FormHelperText>Issue Location</FormHelperText>
-          <Typography type='body1' component='p'>
-            {humanizeLocation(location)}
-          </Typography>
-        </FormControl>
-        <FormControl margin='normal' fullWidth>
-          <FormHelperText>Issue Description</FormHelperText>
-          <Typography type='body1' component='p'>
-            {description}
-          </Typography>
-        </FormControl>
-        <FormControl margin='normal' fullWidth>
-          <FormHelperText>
-            Issue Status (last update: {moment(updatedAt).calendar()})
-          </FormHelperText>
-          <IssueStatus value={status} />
-        </FormControl>
+const IssueDetails = ({ issue }) => {
+  const {
+    location,
+    description,
+    status,
+    canDelete,
+    updatedAt
+  } = issue
+  return (
+    <div>
+      <Grid container justify='center'>
+        <Grid item xs={10}>
+          <FormControl margin='normal' fullWidth>
+            <FormHelperText>Issue Location</FormHelperText>
+            <Typography type='body1' component='p'>
+              {humanizeLocation(location)}
+            </Typography>
+          </FormControl>
+          <FormControl margin='normal' fullWidth>
+            <FormHelperText>Issue Description</FormHelperText>
+            <Typography type='body1' component='p'>
+              {description}
+            </Typography>
+          </FormControl>
+          <FormControl margin='normal' fullWidth>
+            <FormHelperText>
+              Issue Status (last update: {moment(updatedAt).calendar()})
+            </FormHelperText>
+            <IssueStatus value={status} disabled />
+          </FormControl>
+        </Grid>
       </Grid>
-    </Grid>
-    {canDelete && (
-      <FormControl fullWidth>
-        <Button raised>Delete Report</Button>
-      </FormControl>
-    )}
-  </div>
-)
+      {canDelete && (
+        <FormControl fullWidth>
+          <Button raised>Delete Report</Button>
+        </FormControl>
+      )}
+    </div>
+  )
+}
 
-export default IssueDetails
+const mapStateToProps = state => ({
+  issue: state.reports[state.location.payload.issueId]
+})
+
+export default connect(mapStateToProps)(IssueDetails)

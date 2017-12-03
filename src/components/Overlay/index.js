@@ -20,6 +20,16 @@ const MapControls = ({ setMapMode }) =>
     </IconButton>
   </div>
 
+const ReportFab = ({ openForm }) =>
+  <Button fab color='accent' className={style.fab} onClick={openForm}>
+    <Icon>add</Icon>
+  </Button>
+
+const ConnectedFab = connect(null, dispatch => (
+  {
+    openForm: () => dispatch({type: 'CREATE_ISSUE'})
+  }))(ReportFab)
+
 const Bar = ({ className, children }) =>
   <div className={classNames(style.bar, className)}>
     {children}
@@ -40,6 +50,7 @@ const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom }) =
       </Bar>
       <Bar className={style.footer}>
         <MapControls setMapMode={setMapMode} />
+        <ConnectedFab />
       </Bar>
     </div>
   )

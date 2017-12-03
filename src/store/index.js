@@ -9,7 +9,9 @@ import { reports, map } from './reducers'
 const history = createHistory()
 
 const routesMap = {
-  HOME: { path: '/' }
+  HOME: { path: '/' },
+  CREATE_ISSUE: { path: '/issue' },
+  VIEW_ISSUE: { path: '/issue/:issueId' }
 }
 
 const {

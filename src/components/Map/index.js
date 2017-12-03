@@ -2,7 +2,6 @@ import React from 'react'
 import Leaflet from 'leaflet'
 import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, LayerGroup } from 'react-leaflet'
-import _ from 'lodash'
 
 import { getReportsCenter } from '../../lib/location'
 import { setMapCenter, setMapZoom } from '../../store/actions'
@@ -12,6 +11,7 @@ const satelliteTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/satellite-stre
 
 const streetTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
 
+<<<<<<< HEAD
 var MiniIcon = Leaflet.Icon.extend({
   options: {
     iconSize: [20, 20],
@@ -35,15 +35,36 @@ var getStatusIcon = function (status) {
 }
 
 const ReportInfoPopup = ({ report }) =>
+=======
+const DumbPopup = ({ report, openIssue }) =>
+>>>>>>> a6ec455dc9edd9ecc3356ed1db4d956975db7e85
   <Popup className={style.popup} closeButton={false}>
-    <span>{report.description}</span>
+    <button onClick={openIssue}>
+      {report.description}
+    </button>
   </Popup>
+
+const mapReportDispatch = (dispatch, props) => ({
+  openIssue: () => dispatch(
+    {
+      type: 'VIEW_ISSUE',
+      payload: { issueId: props.report.id }
+    }
+  )
+})
+
+const ReportPopup = connect(null, mapReportDispatch)(DumbPopup)
 
 const ReportsLayer = ({ reports }) =>
   <LayerGroup>
     {Object.values(reports).map(report =>
+<<<<<<< HEAD
       <Marker key={report.id} position={report.location} icon={getStatusIcon(report.status)}>
         <ReportInfoPopup report={report} />
+=======
+      <Marker key={report.id} position={report.location}>
+        <ReportPopup report={report} />
+>>>>>>> a6ec455dc9edd9ecc3356ed1db4d956975db7e85
       </Marker>
     )}
   </LayerGroup>
