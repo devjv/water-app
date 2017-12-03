@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, ZoomControl, LayerGroup } from 'react-leaflet'
-import { getCenter } from 'geolib'
 import _ from 'lodash'
 
-import { numberifyLocation } from '../../lib/location'
-import {  setMapCenter } from '../../store/actions'
+import { getReportsCenter } from '../../lib/location'
+import { setMapCenter } from '../../store/actions'
 import style from './map.scss'
 
 const satelliteTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
@@ -27,11 +26,12 @@ const ReportsLayer = ({ reports }) =>
   </LayerGroup>
 
 class MapView extends React.Component {
-  componentWillReceiveProps (props) {
-    // set map center according to reports
-    // const centers = (Object.values(this.props.reports) || []).map(r => r.location)
-    // const center = getCenter(centers)
-    // const mapCenter = numberifyLocation(center)
+  componentDidMount () {
+    if (this.props.reports) {
+      const arr = Object.values(this.props.reports)
+      const center = getReportsCenter(arr)
+      this.props.setMapCenter(center)
+    }
   }
   getTileUrl = () => {
     const mode = this.props.mapMode
@@ -59,6 +59,7 @@ class MapView extends React.Component {
           attributionControl={false}
           zoomControl={false}
           onViewportChanged={this.onViewportChanged}
+          useFlyTo
         >
           <ZoomControl position='bottomright' />
           <TileLayer

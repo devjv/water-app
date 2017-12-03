@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import Button from 'material-ui/Button'
 import classNames from 'classnames'
 
-import { humanizeLocation } from '../../lib/location'
-import { setMapMode } from '../../store/actions'
+import { humanizeLocation, getReportsCenter } from '../../lib/location'
+import { setMapMode, setMapCenter } from '../../store/actions'
 
 import style from './overlay.scss'
 
@@ -19,13 +19,15 @@ const Bar = ({ className, children }) =>
     {children}
   </div>
 
-const Overlay = ({ setMapMode, reports, mapCenter }) => {
+const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter }) => {
   const coordText = humanizeLocation(mapCenter)
-  const title = coordText + ' ' + Object.values(reports).length + ' nearby issues'
+  const reportsArray = Object.values(reports)
+  const title = coordText + ', ' + reportsArray.length + ' nearby issues'
+  const reportsCenter = getReportsCenter(reportsArray)
   return (
     <div className={style.overlay}>
       <Bar className={style.header}>
-        <span>{title}</span>
+        <Button onClick={() => setMapCenter(reportsCenter)}>{title}</Button>
       </Bar>
       <Bar className={style.footer}>
         <MapControls setMapMode={setMapMode} />
@@ -40,7 +42,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  setMapMode: mode => dispatch(setMapMode(mode))
+  setMapMode: mode => dispatch(setMapMode(mode)),
+  setMapCenter: center => dispatch(setMapCenter(center))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overlay)
