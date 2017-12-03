@@ -1,7 +1,9 @@
 import React from 'react'
-import { Map, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet'
+import { connect } from 'react-redux'
+import { Map, Marker, Popup, TileLayer, ZoomControl, LayerGroup } from 'react-leaflet'
 import Button from 'material-ui/Button'
 import classNames from 'classnames'
+import { getCenter } from 'geolib'
 
 import style from './map.scss'
 
@@ -30,6 +32,22 @@ const Overlay = ({ setMapMode }) =>
     </Bar>
   </div>
 
+const ReportInfoPopup = ({ report }) =>
+  <Popup>
+    <span>
+      {report.description}
+    </span>
+  </Popup>
+
+const ReportsLayer = ({ reports }) =>
+  <LayerGroup>
+    {Object.values(reports).map(report =>
+      <Marker key={report.id} position={report.location}>
+        <ReportInfoPopup report={report} />
+      </Marker>
+    )}
+  </LayerGroup>
+
 class MapView extends React.Component {
   constructor () {
     super()
@@ -45,12 +63,12 @@ class MapView extends React.Component {
     }
   }
   render () {
-    const position = [-1.3584125, 36.7290792]
+    const center = getCenter(Object.values(this.props.reports).map(r => r.location))
     return (
       <div className={style.mapContainer}>
         <Map
           className={style.map}
-          center={position}
+          center={[center.longitude, center.latitude]}
           zoom={13}
           attributionControl={false}
           zoomControl={false}
@@ -59,13 +77,7 @@ class MapView extends React.Component {
           <TileLayer
             url={this.state.tileUrl}
           />
-          <Marker position={position}>
-            <Popup>
-              <span>
-                A pretty CSS3 popup.<br />Easily customizable.
-              </span>
-            </Popup>
-          </Marker>
+          <ReportsLayer reports={this.props.reports} />
         </Map>
         <Overlay setMapMode={this.setMapMode} />
       </div>
@@ -73,4 +85,8 @@ class MapView extends React.Component {
   }
 }
 
-export default MapView
+const mapStateToProps = state => ({
+  reports: state.reports
+})
+
+export default connect(mapStateToProps)(MapView)
