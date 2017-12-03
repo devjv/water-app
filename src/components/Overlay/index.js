@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Button from 'material-ui/Button'
+import Icon from 'material-ui/Icon'
+import IconButton from 'material-ui/IconButton'
 import classNames from 'classnames'
 
 import { humanizeLocation, getReportsCenter } from '../../lib/location'
@@ -10,8 +12,12 @@ import style from './overlay.scss'
 
 const MapControls = ({ setMapMode }) =>
   <div className={style.mapControls}>
-    <Button raised className={style.button} onClick={() => setMapMode('sat')}>Satellite</Button>
-    <Button raised className={style.button} onClick={() => setMapMode('street')}>Street</Button>
+    <IconButton className={style.button} onClick={() => setMapMode('sat')}>
+      <Icon>satellite</Icon>
+    </IconButton>
+    <IconButton className={style.button} onClick={() => setMapMode('street')}>
+      <Icon>map</Icon>
+    </IconButton>
   </div>
 
 const Bar = ({ className, children }) =>

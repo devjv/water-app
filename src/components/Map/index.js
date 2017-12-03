@@ -61,7 +61,6 @@ class MapView extends React.Component {
           onViewportChanged={this.onViewportChanged}
           useFlyTo
         >
-          <ZoomControl position='bottomright' />
           <TileLayer
             url={this.getTileUrl()}
           />
