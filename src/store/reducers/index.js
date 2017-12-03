@@ -36,7 +36,7 @@ export const reports = (state = initialReports, action) => {
 const initialMap = {
   mode: 'street',
   center: {lon: 36.7290792, lat: -1.3584125},
-  zoom: undefined
+  zoom: 12
 }
 
 export const map = (state = initialMap, action) => {

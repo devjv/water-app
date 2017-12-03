@@ -17,13 +17,18 @@ import IconButton from 'material-ui/IconButton'
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input'
 import { humanizeLocation } from '../../lib/location'
 
+// priorities
+const LOW = 0
+const MEDIUM = 1
+const HIGH = 2
+
 const IssueForm = ({
-  location,
-  description,
-  priority,
-  photos,
-  onGetLocation,
-  onChange
+  location = {},
+  description = '',
+  priority = 0,
+  photos = [],
+  onGetLocation = f => f,
+  onChange = f => f
 }) => (
   <form className={styles.form}>
     <Grid container justify='center'>
@@ -66,13 +71,13 @@ const IssueForm = ({
             value={priority}
             row
           >
-            <FormControlLabel value='low' control={<Radio />} label='Low' />
+            <FormControlLabel value={LOW} control={<Radio />} label='Low' />
             <FormControlLabel
-              value='medium'
+              value={MEDIUM}
               control={<Radio />}
               label='Medium'
             />
-            <FormControlLabel value='high' control={<Radio />} label='High' />
+            <FormControlLabel value={HIGH} control={<Radio />} label='High' />
           </RadioGroup>
         </FormControl>
         <FormControl margin='normal' fullWidth>
