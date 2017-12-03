@@ -2,22 +2,24 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import MapView from '../Map'
+import Overlay from '../Overlay'
 
 import style from './app.scss'
 
-const getView = page => {
+const getOverlay = page => {
   switch (page) {
     case 'HOME':
-      return <MapView />
+      return <Overlay />
     default:
-      return <MapView />
+      return <span>default</span>
   }
 }
 
 const App = ({ page }) =>
   <div className={style.app}>
     <div className={style.contentPage}>
-      {getView(page)}
+      <MapView />
+      {getOverlay(page)}
     </div>
   </div>
 

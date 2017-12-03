@@ -1,49 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, ZoomControl, LayerGroup } from 'react-leaflet'
-import Button from 'material-ui/Button'
-import Typography from 'material-ui/Typography'
-import classNames from 'classnames'
 import { getCenter } from 'geolib'
+import _ from 'lodash'
 
-import { humanizeLocation, numberifyLocation } from '../../lib/location'
+import { numberifyLocation } from '../../lib/location'
+import {  setMapCenter } from '../../store/actions'
 import style from './map.scss'
 
 const satelliteTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
 
 const streetTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
 
-const MapControls = ({ setMapMode }) =>
-  <div className={style.mapControls}>
-    <Button raised className={style.button} onClick={() => setMapMode('sat')}>Satellite</Button>
-    <Button raised className={style.button} onClick={() => setMapMode('street')}>Street</Button>
-  </div>
-
-const Bar = ({ className, children }) =>
-  <div className={classNames(style.bar, className)}>
-    {children}
-  </div>
-
-const Overlay = ({ setMapMode, reports, center }) => {
-  const coordText = humanizeLocation(center)
-  const title = coordText + ' ' + Object.values(reports).length + ' nearby issues'
-  return (
-    <div className={style.overlay}>
-      <Bar className={style.header}>
-        <span>{title}</span>
-      </Bar>
-      <Bar className={style.footer}>
-        <MapControls setMapMode={setMapMode} />
-      </Bar>
-    </div>
-  )
-}
-
 const ReportInfoPopup = ({ report }) =>
-  <Popup>
-    <span>
-      {report.description}
-    </span>
+  <Popup className={style.popup} closeButton={false}>
+    <span>{report.description}</span>
   </Popup>
 
 const ReportsLayer = ({ reports }) =>
@@ -56,47 +27,58 @@ const ReportsLayer = ({ reports }) =>
   </LayerGroup>
 
 class MapView extends React.Component {
-  constructor () {
-    super()
-    this.state = {
-      tileUrl: satelliteTileUrl
+  componentWillReceiveProps (props) {
+    // set map center according to reports
+    // const centers = (Object.values(this.props.reports) || []).map(r => r.location)
+    // const center = getCenter(centers)
+    // const mapCenter = numberifyLocation(center)
+  }
+  getTileUrl = () => {
+    const mode = this.props.mapMode
+    if (mode === 'street') {
+      return streetTileUrl
+    } else if (mode === 'sat') {
+      return satelliteTileUrl
     }
   }
-  setMapMode = mode => {
-    if (mode === 'street') {
-      this.setState({ tileUrl: streetTileUrl })
-    } else if (mode === 'sat') {
-      this.setState({ tileUrl: satelliteTileUrl })
+  onViewportChanged = ({ center }) => {
+    console.log('center', center)
+    const location = {
+      lat: center[0],
+      lon: center[1]
     }
+    this.props.setMapCenter(location)
   }
   render () {
-    const centers = (Object.values(this.props.reports) || []).map(r => r.location)
-    const center = getCenter(centers)
-    const mapCenter = numberifyLocation(center)
-    console.log(mapCenter)
     return (
       <div className={style.mapContainer}>
         <Map
           className={style.map}
-          center={mapCenter}
+          center={this.props.mapCenter}
           zoom={13}
           attributionControl={false}
           zoomControl={false}
+          onViewportChanged={this.onViewportChanged}
         >
           <ZoomControl position='bottomright' />
           <TileLayer
-            url={this.state.tileUrl}
+            url={this.getTileUrl()}
           />
           <ReportsLayer reports={this.props.reports} />
         </Map>
-        <Overlay setMapMode={this.setMapMode} reports={this.props.reports} center={mapCenter} />
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  reports: state.reports
+  reports: state.reports,
+  mapMode: state.map.mode,
+  mapCenter: state.map.center
 })
 
-export default connect(mapStateToProps)(MapView)
+const mapDispatchToProps = dispatch => ({
+  setMapCenter: center => dispatch(setMapCenter(center))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapView)

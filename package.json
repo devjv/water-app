@@ -39,6 +39,7 @@
     "geolib": "^2.0.24",
     "history": "^4.7.2",
     "leaflet": "^1.2.0",
+    "lodash": "^4.17.4",
     "material-ui": "next",
     "moment": "^2.19.3",
     "node-sass": "^4.6.1",

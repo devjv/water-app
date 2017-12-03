@@ -28,3 +28,25 @@ export const reports = (state = initialReports, action) => {
       return state
   }
 }
+
+const initialMap = {
+  mode: 'street',
+  center: {lon: 36.7290792, lat: -1.3584125}
+}
+
+export const map = (state = initialMap, action) => {
+  switch (action.type) {
+    case 'SET_MAP_MODE':
+      return {
+        ...state,
+        mode: action.payload.mode
+      }
+    case 'SET_MAP_CENTER':
+      return {
+        ...state,
+        center: action.payload.center
+      }
+    default:
+      return state
+  }
+}
