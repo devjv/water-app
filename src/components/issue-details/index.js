@@ -1,12 +1,12 @@
-import React from 'react';
-import { InputLabel } from 'material-ui/Input';
-import Grid from 'material-ui/Grid';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import Typography from 'material-ui/Typography';
-import humanizeLocation from '../../lib/humanize-location';
-import IssueStatus from '../issue-status';
-import Button from 'material-ui/Button';
-import moment from 'moment';
+import React from 'react'
+import { InputLabel } from 'material-ui/Input'
+import Grid from 'material-ui/Grid'
+import { FormControl, FormHelperText } from 'material-ui/Form'
+import Typography from 'material-ui/Typography'
+import humanizeLocation from '../../lib/humanize-location'
+import IssueStatus from '../issue-status'
+import Button from 'material-ui/Button'
+import moment from 'moment'
 
 const IssueDetails = ({
   location,
@@ -16,21 +16,21 @@ const IssueDetails = ({
   updatedAt
 }) => (
   <div>
-    <Grid container justify="center">
+    <Grid container justify='center'>
       <Grid item xs={10}>
-        <FormControl margin="normal" fullWidth>
+        <FormControl margin='normal' fullWidth>
           <FormHelperText>Issue Location</FormHelperText>
-          <Typography type="body1" component="p">
+          <Typography type='body1' component='p'>
             {humanizeLocation(location)}
           </Typography>
         </FormControl>
-        <FormControl margin="normal" fullWidth>
+        <FormControl margin='normal' fullWidth>
           <FormHelperText>Issue Description</FormHelperText>
-          <Typography type="body1" component="p">
+          <Typography type='body1' component='p'>
             {description}
           </Typography>
         </FormControl>
-        <FormControl margin="normal" fullWidth>
+        <FormControl margin='normal' fullWidth>
           <FormHelperText>
             Issue Status (last update: {moment(updatedAt).calendar()})
           </FormHelperText>
@@ -44,6 +44,6 @@ const IssueDetails = ({
       </FormControl>
     )}
   </div>
-);
+)
 
-export default IssueDetails;
+export default IssueDetails

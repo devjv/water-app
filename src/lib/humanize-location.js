@@ -1,9 +1,9 @@
-export default function humanizeLocation(location) {
+export default function humanizeLocation (location) {
   if (!location) {
-    return;
+    return
   }
 
-  const { latitude, longitude } = location;
+  const { latitude, longitude } = location
 
-  return `${latitude.toFixed(4)}°, ${longitude.toFixed(4)}°`;
+  return `${latitude.toFixed(4)}°, ${longitude.toFixed(4)}°`
 }
