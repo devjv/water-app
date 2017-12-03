@@ -20,6 +20,11 @@ const MapControls = ({ setMapMode }) =>
     </IconButton>
   </div>
 
+const ReportFab = () =>
+  <Button fab color='accent' className={style.fab}>
+    <Icon>add</Icon>
+  </Button>
+
 const Bar = ({ className, children }) =>
   <div className={classNames(style.bar, className)}>
     {children}
@@ -40,6 +45,7 @@ const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom }) =
       </Bar>
       <Bar className={style.footer}>
         <MapControls setMapMode={setMapMode} />
+        <ReportFab />
       </Bar>
     </div>
   )

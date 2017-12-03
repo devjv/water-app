@@ -4,14 +4,18 @@ const initialReports = {
     location: {lon: 36.7290792, lat: -1.3584125},
     status: 0,
     description: 'Pretty bad leak',
-    priority: 1
+    priority: 1,
+    updatedAt: '2017-12-03T18:26:44.948',
+    canDelete: false
   },
   '1': {
     id: '1',
     location: {lon: 36.8, lat: -1.2921},
     status: 1,
     description: 'Leaky faucet',
-    priority: 0
+    priority: 0,
+    updatedAt: '2017-12-03T18:26:44.948',
+    canDelete: true
   }
 }
 

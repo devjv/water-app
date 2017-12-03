@@ -1,30 +1,55 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Drawer from 'material-ui/Drawer'
+import _ from 'lodash'
 
 import MapView from '../Map'
 import Overlay from '../Overlay'
+import IssueDetails from '../issue-details'
+import IssueForm from '../issue-form'
 
 import style from './app.scss'
 
-const getOverlay = page => {
+const getDrawerContent = (page, payload) => {
   switch (page) {
-    case 'HOME':
-      return <Overlay />
+    case 'CREATE_ISSUE':
+      return <IssueForm />
+    case 'VIEW_ISSUE':
+      return <IssueDetails />
     default:
-      return <span>default</span>
+      return null
   }
 }
 
-const App = ({ page }) =>
-  <div className={style.app}>
-    <div className={style.contentPage}>
-      <MapView />
-      {getOverlay(page)}
-    </div>
-  </div>
+const isDrawerPage = page =>
+  _.includes(['CREATE_ISSUE', 'VIEW_ISSUE'], page)
+
+const DrawerWithContent = ({ page, close }) =>
+  <Drawer
+    anchor='bottom'
+    open={isDrawerPage(page)}
+    onRequestClose={close}
+  >
+    {getDrawerContent(page)}
+  </Drawer>
 
 const mapStateToProps = state => ({
   page: state.location.type
 })
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = dispatch => ({
+  close: () => dispatch({type: 'HOME'})
+})
+
+const ConnectedDrawer = connect(mapStateToProps, mapDispatchToProps)(DrawerWithContent)
+
+const App = () =>
+  <div className={style.app}>
+    <div className={style.contentPage}>
+      <MapView />
+      <Overlay />
+      <ConnectedDrawer />
+    </div>
+  </div>
+
+export default App

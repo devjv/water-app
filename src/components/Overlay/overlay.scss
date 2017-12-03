@@ -14,11 +14,12 @@
 }
 
 .bar {
-  height: 4em;
+  
   pointer-events: initial;
 }
 
 .header {
+  height: 4em;
   background: white;
   display: flex;
   justify-content: center;
@@ -32,7 +33,17 @@
   }
 }
 
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fab {
+  margin: 2em;
+}
+
 .mapControls {
+  flex: 0;
   display: inline-block;
   padding: .6em;
   background: white;
