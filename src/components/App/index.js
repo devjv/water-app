@@ -41,14 +41,14 @@ const mapDispatchToProps = dispatch => ({
   close: () => dispatch({type: 'HOME'})
 })
 
-const ConnectedDrawer = connect(mapStateToProps, mapDispatchToProps)(DrawerWithContent)
+const BottomDrawer = connect(mapStateToProps, mapDispatchToProps)(DrawerWithContent)
 
 const App = () =>
   <div className={style.app}>
     <div className={style.contentPage}>
       <MapView />
       <Overlay />
-      <ConnectedDrawer />
+      <BottomDrawer />
     </div>
   </div>
 

@@ -42,11 +42,9 @@
 .mapControls {
   flex: 0;
   display: inline-block;
-  padding: .6em;
+  padding: .2em;
+  align-self: flex-end;
   background: white;
-  border-top-right-radius: 1em;
+  border-top-right-radius: 1em !important;
   pointer-events: initial;
-}
-
-.button {
 }
