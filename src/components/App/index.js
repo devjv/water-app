@@ -1,8 +1,28 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-const App = () =>
-  <div>
-    <h2>Water-app</h2>
+import MapView from '../Map'
+
+import style from './app.scss'
+
+const getView = page => {
+  switch (page) {
+    case 'HOME':
+      return <MapView />
+    default:
+      return <MapView />
+  }
+}
+
+const App = ({ page }) =>
+  <div className={style.app}>
+    <div className={style.contentPage}>
+      {getView(page)}
+    </div>
   </div>
 
-export default App
+const mapStateToProps = state => ({
+  page: state.location.type
+})
+
+export default connect(mapStateToProps)(App)
