@@ -17,3 +17,8 @@ export const setMapCenter = center => ({
   type: 'SET_MAP_CENTER',
   payload: { center }
 })
+
+export const setMapZoom = zoom => ({
+  type: 'SET_MAP_ZOOM',
+  payload: { zoom }
+})
