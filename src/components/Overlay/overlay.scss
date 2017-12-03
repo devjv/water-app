@@ -22,6 +22,7 @@
   color: $blue;
   text-transform: uppercase;
   font-family: 'Roboto', sans-serif;
+  pointer-events: initial;
 
   button {
     color: $blue;
