@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
-import purple from 'material-ui/colors/purple'
+import indigo from 'material-ui/colors/indigo'
 import blue from 'material-ui/colors/blue'
 
 import './assets/favicon.png'
@@ -14,7 +14,7 @@ import './style/main.scss'
 
 const theme = createMuiTheme({
   palette: {
-    primary: purple,
+    primary: indigo,
     secondary: blue
   }
 })

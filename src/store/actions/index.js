@@ -1,3 +1,5 @@
+const mockUserLocation = { lon: 36.7290792, lat: -1.3584125 }
+
 export const setReport = report => ({
   type: 'SET_REPORT',
   payload: { report }
@@ -22,3 +24,18 @@ export const setMapZoom = zoom => ({
   type: 'SET_MAP_ZOOM',
   payload: { zoom }
 })
+
+export const locateUser = pending => ({
+  type: 'LOCATE_USER',
+  payload: { pending }
+})
+
+export function locateUserThunk () {
+  return dispatch => {
+    dispatch(locateUser(true))
+    setTimeout(() => {
+      dispatch(locateUser(false))
+      dispatch(setMapCenter(mockUserLocation))
+    }, 1000)
+  }
+}
