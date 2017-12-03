@@ -1,4 +1,5 @@
 import React from 'react'
+import Leaflet from 'leaflet'
 import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, LayerGroup } from 'react-leaflet'
 import _ from 'lodash'
@@ -11,6 +12,28 @@ const satelliteTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/satellite-stre
 
 const streetTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
 
+var MiniIcon = Leaflet.Icon.extend({
+  options: {
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+    popupAnchor: [0, -10]
+  }
+})
+
+var statusIcon0 = new MiniIcon({iconUrl: 'src/assets/status0.png'})
+var statusIcon1 = new MiniIcon({iconUrl: 'src/assets/status1.png'})
+
+var getStatusIcon = function (status) {
+  switch (status) {
+    case 0:
+      return statusIcon0
+    case 1:
+      return statusIcon1
+    default:
+      throw new Error('invalid report status')
+  }
+}
+
 const ReportInfoPopup = ({ report }) =>
   <Popup className={style.popup} closeButton={false}>
     <span>{report.description}</span>
@@ -19,7 +42,7 @@ const ReportInfoPopup = ({ report }) =>
 const ReportsLayer = ({ reports }) =>
   <LayerGroup>
     {Object.values(reports).map(report =>
-      <Marker key={report.id} position={report.location}>
+      <Marker key={report.id} position={report.location} icon={getStatusIcon(report.status)}>
         <ReportInfoPopup report={report} />
       </Marker>
     )}
