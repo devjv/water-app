@@ -13,11 +13,6 @@
   pointer-events: none;
 }
 
-.bar {
-  
-  pointer-events: initial;
-}
-
 .header {
   height: 4em;
   background: white;
@@ -36,10 +31,12 @@
 .footer {
   display: flex;
   justify-content: space-between;
+  pointer-events: none;
 }
 
 .fab {
   margin: 2em;
+  pointer-events: initial;
 }
 
 .mapControls {
@@ -48,6 +45,7 @@
   padding: .6em;
   background: white;
   border-top-right-radius: 1em;
+  pointer-events: initial;
 }
 
 .button {
