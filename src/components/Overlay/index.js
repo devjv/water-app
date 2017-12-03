@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton'
 import classNames from 'classnames'
 
 import { humanizeLocation, getReportsCenter } from '../../lib/location'
-import { setMapMode, setMapCenter } from '../../store/actions'
+import { setMapMode, setMapCenter, setMapZoom } from '../../store/actions'
 
 import style from './overlay.scss'
 
@@ -25,7 +25,7 @@ const Bar = ({ className, children }) =>
     {children}
   </div>
 
-const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter }) => {
+const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom }) => {
   const coordText = humanizeLocation(mapCenter)
   const reportsArray = Object.values(reports)
   const title = coordText + ', ' + reportsArray.length + ' nearby issues'
@@ -33,7 +33,10 @@ const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter }) => {
   return (
     <div className={style.overlay}>
       <Bar className={style.header}>
-        <Button onClick={() => setMapCenter(reportsCenter)}>{title}</Button>
+        <Button onClick={() => {
+          setMapCenter(reportsCenter)
+          setMapZoom(12)
+        }}>{title}</Button>
       </Bar>
       <Bar className={style.footer}>
         <MapControls setMapMode={setMapMode} />
@@ -49,7 +52,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setMapMode: mode => dispatch(setMapMode(mode)),
-  setMapCenter: center => dispatch(setMapCenter(center))
+  setMapCenter: center => dispatch(setMapCenter(center)),
+  setMapZoom: zoom => dispatch(setMapZoom(zoom))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overlay)
