@@ -36,6 +36,8 @@
     "express": "^4.16.2",
     "file-loader": "^1.1.5",
     "history": "^4.7.2",
+    "material-ui": "^1.0.0-beta.22",
+    "moment": "^2.19.3",
     "node-sass": "^4.6.1",
     "postcss-loader": "^2.0.8",
     "query-string": "^5.0.1",
