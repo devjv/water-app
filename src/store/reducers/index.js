@@ -1,10 +1,12 @@
+import uuidv4 from 'uuid/v4'
+
 const initialReports = {
   '0': {
     id: '0',
     location: { lon: 36.7290792, lat: -1.3584125 },
     status: 0,
     description: 'Pretty bad leak',
-    priority: 1,
+    priority: 'medium',
     updatedAt: '2017-12-03T18:26:44.948',
     canDelete: false
   },
@@ -13,7 +15,7 @@ const initialReports = {
     location: { lon: 36.8, lat: -1.2921 },
     status: 1,
     description: 'Leaky faucet',
-    priority: 0,
+    priority: 'low',
     updatedAt: '2017-12-03T18:26:44.948',
     canDelete: true
   },
@@ -22,7 +24,7 @@ const initialReports = {
     location: { lon: 36.69, lat: -1.28 },
     status: 1,
     description: 'Water is out',
-    priority: 2,
+    priority: 'high',
     updatedAt: '2017-12-03T18:26:44.948',
     canDelete: false
   }
@@ -30,10 +32,10 @@ const initialReports = {
 
 export const reports = (state = initialReports, action) => {
   switch (action.type) {
-    case 'SET_REPORT':
+    case 'ADD_REPORT':
       return {
         ...state,
-        [action.payload.report.id]: action.payload.report
+        [uuidv4()]: action.payload.report
       }
     case 'SET_REPORTS':
       return action.payload.reports
