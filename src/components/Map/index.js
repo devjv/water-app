@@ -2,6 +2,7 @@ import React from 'react'
 import Leaflet from 'leaflet'
 import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, LayerGroup } from 'react-leaflet'
+import moment from 'moment'
 
 import { getReportsCenter } from '../../lib/location'
 import { setMapCenter, setMapZoom } from '../../store/actions'
@@ -27,9 +28,16 @@ const prioIcons = {
   high: new MiniIcon({ iconUrl: 'src/assets/prio2.png' })
 }
 
-const DumbPopup = ({ report, openIssue }) => (
-  <Popup className={style.popup} closeButton={false}>
-    <button onClick={openIssue}>{report.description}</button>
+var formatTime = function (timestamp) {
+  return moment(timestamp).fromNow()
+}
+
+const DumbPopup = ({ report, openIssue, closeIssue }) => (
+  <Popup className={style.popup} closeButton={false} onOpen={openIssue} onClose={closeIssue} >
+    <div>
+      <p>{report.description}</p>
+      <p>Updated {formatTime(report.updatedAt)}</p>
+    </div>
   </Popup>
 )
 
@@ -38,6 +46,10 @@ const mapReportDispatch = (dispatch, props) => ({
     dispatch({
       type: 'VIEW_ISSUE',
       payload: { issueId: props.report.id }
+    }),
+  closeIssue: () =>
+    dispatch({
+      type: 'HOME'
     })
 })
 
