@@ -19,21 +19,10 @@ const MiniIcon = Leaflet.Icon.extend({
   }
 })
 
-const prioIcon0 = new MiniIcon({iconUrl: 'src/assets/prio0.png'})
-const prioIcon1 = new MiniIcon({iconUrl: 'src/assets/prio1.png'})
-const prioIcon2 = new MiniIcon({iconUrl: 'src/assets/prio2.png'})
-
-var getPriorityIcon = function (status) {
-  switch (status) {
-    case 0:
-      return prioIcon0
-    case 1:
-      return prioIcon1
-    case 2:
-      return prioIcon2
-    default:
-      throw new Error('invalid report status')
-  }
+const prioIcons = {
+  0: new MiniIcon({iconUrl: 'src/assets/prio0.png'}),
+  1: new MiniIcon({iconUrl: 'src/assets/prio1.png'}),
+  2: new MiniIcon({iconUrl: 'src/assets/prio2.png'})
 }
 
 const DumbPopup = ({ report, openIssue }) =>
@@ -57,7 +46,7 @@ const ReportPopup = connect(null, mapReportDispatch)(DumbPopup)
 const ReportsLayer = ({ reports }) =>
   <LayerGroup>
     {Object.values(reports).map(report =>
-      <Marker key={report.id} position={report.location} icon={getPriorityIcon(report.priority)}>
+      <Marker key={report.id} position={report.location} icon={prioIcons[report.priority]}>
         <ReportPopup report={report} />
       </Marker>
     )}
