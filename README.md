@@ -13,7 +13,8 @@ Group project for course CS-E5220
 ### Features
 
  - [ ] Add a marker for own position
- - [ ] Add close button to drawer (or close when tapping map without dragging)
+ - [ ] Add close button to drawer
+   - [x] or close when tapping map without dragging
  - [x] Allow deleting own reports
 
 ### Nice-to-haves
