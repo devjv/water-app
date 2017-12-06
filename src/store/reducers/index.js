@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid/v4'
+import omit from 'lodash/omit'
 
 const initialReports = {
   '0': {
@@ -37,13 +38,16 @@ export const reports = (state = initialReports, action) => {
       const report = {
         ...action.payload.report,
         id,
-        status: 0
+        status: 0,
+        canDelete: true
       }
 
       return {
         ...state,
         [id]: report
       }
+    case 'REMOVE_REPORT':
+      return omit(state, action.payload)
     case 'SET_REPORTS':
       return action.payload.reports
     default:

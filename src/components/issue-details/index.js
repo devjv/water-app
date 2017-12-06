@@ -8,7 +8,7 @@ import IssueStatus from '../issue-status'
 import Button from 'material-ui/Button'
 import moment from 'moment'
 
-const IssueDetails = ({ issue }) => {
+const IssueDetails = ({ issue, onDelete }) => {
   const { location, description, status, canDelete, updatedAt } = issue
   return (
     <div>
@@ -36,7 +36,9 @@ const IssueDetails = ({ issue }) => {
       </Grid>
       {canDelete && (
         <FormControl fullWidth>
-          <Button raised>Delete Report</Button>
+          <Button raised onClick={onDelete}>
+            Delete Report
+          </Button>
         </FormControl>
       )}
     </div>
@@ -47,4 +49,13 @@ const mapStateToProps = state => ({
   issue: state.reports[state.location.payload.issueId]
 })
 
-export default connect(mapStateToProps)(IssueDetails)
+const mergeProps = (stateProps, { dispatch }, ownProps) => ({
+  ...stateProps,
+  ...ownProps,
+  onDelete: () => {
+    dispatch({ type: 'HOME' })
+    dispatch({ type: 'REMOVE_REPORT', payload: stateProps.issue.id })
+  }
+})
+
+export default connect(mapStateToProps, null, mergeProps)(IssueDetails)
