@@ -33,9 +33,16 @@ const initialReports = {
 export const reports = (state = initialReports, action) => {
   switch (action.type) {
     case 'ADD_REPORT':
+      const id = uuidv4()
+      const report = {
+        ...action.payload.report,
+        id,
+        status: 0
+      }
+
       return {
         ...state,
-        [uuidv4()]: action.payload.report
+        [id]: report
       }
     case 'SET_REPORTS':
       return action.payload.reports
