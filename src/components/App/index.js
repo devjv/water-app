@@ -6,14 +6,14 @@ import _ from 'lodash'
 import MapView from '../Map'
 import Overlay from '../Overlay'
 import IssueDetails from '../issue-details'
-import IssueForm from '../issue-form'
+import { CurrentLocationIssueForm } from '../issue-form'
 
 import style from './app.scss'
 
 const getDrawerContent = (page, payload) => {
   switch (page) {
     case 'CREATE_ISSUE':
-      return <IssueForm />
+      return <CurrentLocationIssueForm />
     case 'VIEW_ISSUE':
       return <IssueDetails />
     default:
@@ -21,29 +21,32 @@ const getDrawerContent = (page, payload) => {
   }
 }
 
-const isDrawerPage = page =>
-  _.includes(['CREATE_ISSUE', 'VIEW_ISSUE'], page)
+const isDrawerPage = page => _.includes(['CREATE_ISSUE', 'VIEW_ISSUE'], page)
 
-const DrawerWithContent = ({ page, close }) =>
+const DrawerWithContent = ({ page, close }) => (
   <Drawer
     anchor='bottom'
     open={isDrawerPage(page)}
     onRequestClose={close}
+    type='persistent'
   >
     {getDrawerContent(page)}
   </Drawer>
+)
 
 const mapStateToProps = state => ({
   page: state.location.type
 })
 
 const mapDispatchToProps = dispatch => ({
-  close: () => dispatch({type: 'HOME'})
+  close: () => dispatch({ type: 'HOME' })
 })
 
-const BottomDrawer = connect(mapStateToProps, mapDispatchToProps)(DrawerWithContent)
+const BottomDrawer = connect(mapStateToProps, mapDispatchToProps)(
+  DrawerWithContent
+)
 
-const App = () =>
+const App = () => (
   <div className={style.app}>
     <div className={style.contentPage}>
       <MapView />
@@ -51,5 +54,6 @@ const App = () =>
       <BottomDrawer />
     </div>
   </div>
+)
 
 export default App

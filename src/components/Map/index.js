@@ -7,9 +7,11 @@ import { getReportsCenter } from '../../lib/location'
 import { setMapCenter, setMapZoom } from '../../store/actions'
 import style from './map.scss'
 
-const satelliteTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
+const satelliteTileUrl =
+  'https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
 
-const streetTileUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
+const streetTileUrl =
+  'https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
 
 const MiniIcon = Leaflet.Icon.extend({
   options: {
@@ -20,37 +22,40 @@ const MiniIcon = Leaflet.Icon.extend({
 })
 
 const prioIcons = {
-  0: new MiniIcon({iconUrl: 'src/assets/prio0.png'}),
-  1: new MiniIcon({iconUrl: 'src/assets/prio1.png'}),
-  2: new MiniIcon({iconUrl: 'src/assets/prio2.png'})
+  low: new MiniIcon({ iconUrl: 'src/assets/prio0.png' }),
+  medium: new MiniIcon({ iconUrl: 'src/assets/prio1.png' }),
+  high: new MiniIcon({ iconUrl: 'src/assets/prio2.png' })
 }
 
-const DumbPopup = ({ report, openIssue }) =>
+const DumbPopup = ({ report, openIssue }) => (
   <Popup className={style.popup} closeButton={false}>
-    <button onClick={openIssue}>
-      {report.description}
-    </button>
+    <button onClick={openIssue}>{report.description}</button>
   </Popup>
+)
 
 const mapReportDispatch = (dispatch, props) => ({
-  openIssue: () => dispatch(
-    {
+  openIssue: () =>
+    dispatch({
       type: 'VIEW_ISSUE',
       payload: { issueId: props.report.id }
-    }
-  )
+    })
 })
 
 const ReportPopup = connect(null, mapReportDispatch)(DumbPopup)
 
-const ReportsLayer = ({ reports }) =>
+const ReportsLayer = ({ reports }) => (
   <LayerGroup>
-    {Object.values(reports).map(report =>
-      <Marker key={report.id} position={report.location} icon={prioIcons[report.priority]}>
+    {Object.values(reports).map(report => (
+      <Marker
+        key={report.id}
+        position={report.location}
+        icon={prioIcons[report.priority]}
+      >
         <ReportPopup report={report} />
       </Marker>
-    )}
+    ))}
   </LayerGroup>
+)
 
 class MapView extends React.Component {
   componentDidMount () {
@@ -88,9 +93,7 @@ class MapView extends React.Component {
           useFlyTo
           zoom={this.props.mapZoom || 13}
         >
-          <TileLayer
-            url={this.getTileUrl()}
-          />
+          <TileLayer url={this.getTileUrl()} />
           <ReportsLayer reports={this.props.reports} />
         </Map>
       </div>

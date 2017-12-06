@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { InputLabel } from 'material-ui/Input'
 import Grid from 'material-ui/Grid'
 import { FormControl, FormHelperText } from 'material-ui/Form'
 import Typography from 'material-ui/Typography'
@@ -10,13 +9,7 @@ import Button from 'material-ui/Button'
 import moment from 'moment'
 
 const IssueDetails = ({ issue }) => {
-  const {
-    location,
-    description,
-    status,
-    canDelete,
-    updatedAt
-  } = issue
+  const { location, description, status, canDelete, updatedAt } = issue
   return (
     <div>
       <Grid container justify='center'>
