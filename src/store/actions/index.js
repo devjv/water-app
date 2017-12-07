@@ -30,6 +30,7 @@ export const locateUser = pending => ({
   payload: { pending }
 })
 
+// This is not used at the moment:
 export function locateUserThunk () {
   return dispatch => {
     dispatch(locateUser(true))

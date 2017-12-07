@@ -14,7 +14,7 @@
 }
 
 .header {
-  height: 4em;
+  height: 3em;
   background: white;
   display: flex;
   justify-content: center;
@@ -38,6 +38,7 @@
 .fab {
   margin: 2em;
   pointer-events: initial;
+  align-self: flex-end;
 }
 
 .mapControls {

@@ -10,7 +10,7 @@ import { setMapMode, setMapCenter, setMapZoom } from '../../store/actions'
 
 import style from './overlay.scss'
 
-const MapControls = ({ setMapMode }) =>
+const MapControls = ({ setMapMode, setMapCenter, setMapZoom, userLocation }) =>
   <Paper className={style.mapControls} elevation={1}>
     <div>
       <IconButton className={style.button} onClick={() => setMapMode('sat')}>
@@ -18,6 +18,12 @@ const MapControls = ({ setMapMode }) =>
       </IconButton>
       <IconButton className={style.button} onClick={() => setMapMode('street')}>
         <Icon>map</Icon>
+      </IconButton>
+      <IconButton className={style.button} onClick={() => {
+        setMapCenter(userLocation)
+        setMapZoom(14)
+      }}>
+        <Icon>my_location</Icon>
       </IconButton>
     </div>
   </Paper>
@@ -32,7 +38,7 @@ const ConnectedFab = connect(null, dispatch => (
     openForm: () => dispatch({ type: 'CREATE_ISSUE' })
   }))(ReportFab)
 
-const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom }) => {
+const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom, userLocation }) => {
   const coordText = humanizeLocation(mapCenter)
   const reportsArray = Object.values(reports)
   const title = coordText + ', ' + reportsArray.length + ' nearby issues'
@@ -46,7 +52,7 @@ const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom }) =
         }}>{title}</Button>
       </Paper>
       <div className={style.footer}>
-        <MapControls setMapMode={setMapMode} />
+        <MapControls setMapMode={setMapMode} setMapCenter={setMapCenter} setMapZoom={setMapZoom} userLocation={userLocation} />
         <ConnectedFab />
       </div>
     </div>
@@ -55,7 +61,8 @@ const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom }) =
 
 const mapStateToProps = state => ({
   reports: state.reports,
-  mapCenter: state.map.center
+  mapCenter: state.map.center,
+  userLocation: state.map.userLocation
 })
 
 const mapDispatchToProps = dispatch => ({
