@@ -39,7 +39,12 @@ var formatTime = function (timestamp) {
 }
 
 const DumbPopup = ({ report, openIssue, closeIssue }) => (
-  <Popup className={style.popup} closeButton={false} onOpen={openIssue} onClose={closeIssue} >
+  <Popup
+    className={style.popup}
+    closeButton={false}
+    onOpen={openIssue}
+    onClose={closeIssue}
+  >
     <div>
       <p>{report.description}</p>
       <p>Updated {formatTime(report.updatedAt)}</p>
@@ -98,6 +103,7 @@ class MapView extends React.Component {
       return satelliteTileUrl
     }
   }
+
   onViewportChanged = ({ center, zoom }) => {
     const location = {
       lat: center[0],
@@ -106,21 +112,25 @@ class MapView extends React.Component {
     this.props.setMapCenter(location)
     this.props.setMapZoom(zoom)
   }
+
   render () {
+    const { onClick, mapZoom, mapCenter, reports, userLocation } = this.props
+
     return (
       <div className={style.mapContainer}>
         <Map
+          onClick={onClick}
           className={style.map}
-          center={this.props.mapCenter}
+          center={mapCenter}
           attributionControl={false}
           zoomControl={false}
           onViewportChanged={this.onViewportChanged}
           useFlyTo
-          zoom={this.props.mapZoom || 13}
+          zoom={mapZoom || 13}
         >
           <TileLayer url={this.getTileUrl()} />
-          <ReportsLayer reports={this.props.reports} />
-          <UserLayer userLocation={this.props.userLocation} />
+          <ReportsLayer reports={reports} />
+          <UserLayer userLocation={userLocation} />
         </Map>
       </div>
     )
@@ -137,7 +147,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setMapCenter: center => dispatch(setMapCenter(center)),
-  setMapZoom: zoom => dispatch(setMapZoom(zoom))
+  setMapZoom: zoom => dispatch(setMapZoom(zoom)),
+  onClick: () => dispatch({ type: 'HOME' })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapView)
