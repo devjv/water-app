@@ -1,17 +1,19 @@
 @import '../../style/colors.scss';
 
 .mapContainer {
-  width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
 }
 
 .map {
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
 }
 
 .popup {
-  padding: .1em 1em;
+  padding: 0.1em 1em;
 
   .leaflet-popup-content-wrapper {
     padding: 1000px;
