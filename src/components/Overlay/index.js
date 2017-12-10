@@ -4,39 +4,13 @@ import Button from 'material-ui/Button'
 import Icon from 'material-ui/Icon'
 import Paper from 'material-ui/Paper'
 import IconButton from 'material-ui/IconButton'
+import MapControls from './map-controls'
 import { refreshMap } from '../../lib/map-helpers'
 
 import { humanizeLocation, getReportsCenter } from '../../lib/location'
 import { setMapMode, setMapCenter, setMapZoom } from '../../store/actions'
 
 import style from './overlay.scss'
-
-const MapControls = ({
-  setMapMode,
-  setMapCenter,
-  setMapZoom,
-  userLocation
-}) => (
-  <Paper className={style.mapControls} elevation={1}>
-    <div>
-      <IconButton className={style.button} onClick={() => setMapMode('sat')}>
-        <Icon>satellite</Icon>
-      </IconButton>
-      <IconButton className={style.button} onClick={() => setMapMode('street')}>
-        <Icon>map</Icon>
-      </IconButton>
-      <IconButton
-        className={style.button}
-        onClick={() => {
-          setMapCenter(userLocation)
-          setMapZoom(14)
-        }}
-      >
-        <Icon>my_location</Icon>
-      </IconButton>
-    </div>
-  </Paper>
-)
 
 const ReportFab = ({ openForm }) => (
   <Button raised color='accent' className={style.fab} onClick={openForm}>
