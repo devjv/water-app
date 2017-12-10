@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, LayerGroup } from 'react-leaflet'
 import moment from 'moment'
 
-import { getReportsCenter } from '../../lib/location'
+// import { getReportsCenter } from '../../lib/location'
 import { setMapCenter, setMapZoom } from '../../store/actions'
 import style from './map.scss'
 
@@ -14,7 +14,7 @@ const satelliteTileUrl =
 const streetTileUrl =
   'https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVyZWxldCIsImEiOiJjajg1cGNvdW0wbHB5MzJvOWNmMHo2bzJjIn0.740ls-yXSk4o849wDH7Wcg'
 
-const MiniIcon = Leaflet.Icon.extend({
+const StatusIcon = Leaflet.Icon.extend({
   options: {
     iconSize: [40, 36],
     iconAnchor: [20, 18],
@@ -23,10 +23,16 @@ const MiniIcon = Leaflet.Icon.extend({
 })
 
 const prioIcons = {
-  low: new MiniIcon({ iconUrl: 'src/assets/prio0.png' }),
-  medium: new MiniIcon({ iconUrl: 'src/assets/prio1.png' }),
-  high: new MiniIcon({ iconUrl: 'src/assets/prio2.png' })
+  low: new StatusIcon({ iconUrl: 'src/assets/prio0.png' }),
+  medium: new StatusIcon({ iconUrl: 'src/assets/prio1.png' }),
+  high: new StatusIcon({ iconUrl: 'src/assets/prio2.png' })
 }
+
+var userIcon = Leaflet.icon({
+  iconUrl: 'src/assets/user.png',
+  iconSize: [30, 30],
+  iconAnchor: [15, 15]
+})
 
 var formatTime = function (timestamp) {
   return moment(timestamp).fromNow()
@@ -69,14 +75,21 @@ const ReportsLayer = ({ reports }) => (
   </LayerGroup>
 )
 
+const UserLayer = ({ userLocation }) => (
+  <LayerGroup>
+    <Marker key='user' position={userLocation} icon={userIcon} />
+  </LayerGroup>
+)
+
 class MapView extends React.Component {
-  componentDidMount () {
-    if (this.props.reports) {
-      const arr = Object.values(this.props.reports)
-      const center = getReportsCenter(arr)
-      this.props.setMapCenter(center)
-    }
-  }
+  // Use this if the initial map should be centered according to the reports instead of the user locations
+  // componentDidMount () {
+  //   if (this.props.reports) {
+  //     const arr = Object.values(this.props.reports)
+  //     const center = getReportsCenter(arr)
+  //     this.props.setMapCenter(center)
+  //   }
+  // }
   getTileUrl = () => {
     const mode = this.props.mapMode
     if (mode === 'street') {
@@ -107,6 +120,7 @@ class MapView extends React.Component {
         >
           <TileLayer url={this.getTileUrl()} />
           <ReportsLayer reports={this.props.reports} />
+          <UserLayer userLocation={this.props.userLocation} />
         </Map>
       </div>
     )
@@ -117,7 +131,8 @@ const mapStateToProps = state => ({
   reports: state.reports,
   mapMode: state.map.mode,
   mapCenter: state.map.center,
-  mapZoom: state.map.zoom
+  mapZoom: state.map.zoom,
+  userLocation: state.map.userLocation
 })
 
 const mapDispatchToProps = dispatch => ({

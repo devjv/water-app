@@ -4,7 +4,7 @@ import omit from 'lodash/omit'
 const initialReports = {
   '0': {
     id: '0',
-    location: { lon: 36.7290792, lat: -1.3584125 },
+    location: { lon: 36.7390792, lat: -1.3564125 },
     status: 0,
     description: 'Pretty bad leak',
     priority: 'medium',
@@ -13,7 +13,7 @@ const initialReports = {
   },
   '1': {
     id: '1',
-    location: { lon: 36.8, lat: -1.2921 },
+    location: { lon: 36.79, lat: -1.2921 },
     status: 1,
     description: 'Leaky faucet',
     priority: 'low',
@@ -60,7 +60,8 @@ const mockUserLocation = { lon: 36.7290792, lat: -1.3584125 }
 const initialMap = {
   mode: 'street',
   center: mockUserLocation,
-  zoom: 12,
+  zoom: 14,
+  userLocation: mockUserLocation,
   locationPending: false
 }
 
