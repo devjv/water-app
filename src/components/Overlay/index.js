@@ -39,8 +39,8 @@ const MapControls = ({
 )
 
 const ReportFab = ({ openForm }) => (
-  <Button fab color='accent' className={style.fab} onClick={openForm}>
-    <Icon>add</Icon>
+  <Button raised color='accent' className={style.fab} onClick={openForm}>
+    Report a new issue
   </Button>
 )
 
