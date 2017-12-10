@@ -10,7 +10,12 @@ import { setMapMode, setMapCenter, setMapZoom } from '../../store/actions'
 
 import style from './overlay.scss'
 
-const MapControls = ({ setMapMode, setMapCenter, setMapZoom, userLocation }) =>
+const MapControls = ({
+  setMapMode,
+  setMapCenter,
+  setMapZoom,
+  userLocation
+}) => (
   <Paper className={style.mapControls} elevation={1}>
     <div>
       <IconButton className={style.button} onClick={() => setMapMode('sat')}>
@@ -19,26 +24,40 @@ const MapControls = ({ setMapMode, setMapCenter, setMapZoom, userLocation }) =>
       <IconButton className={style.button} onClick={() => setMapMode('street')}>
         <Icon>map</Icon>
       </IconButton>
-      <IconButton className={style.button} onClick={() => {
-        setMapCenter(userLocation)
-        setMapZoom(14)
-      }}>
+      <IconButton
+        className={style.button}
+        onClick={() => {
+          setMapCenter(userLocation)
+          setMapZoom(14)
+        }}
+      >
         <Icon>my_location</Icon>
       </IconButton>
     </div>
   </Paper>
+)
 
-const ReportFab = ({ openForm }) =>
+const ReportFab = ({ openForm }) => (
   <Button fab color='accent' className={style.fab} onClick={openForm}>
     <Icon>add</Icon>
   </Button>
+)
 
-const ConnectedFab = connect(null, dispatch => (
-  {
-    openForm: () => dispatch({ type: 'CREATE_ISSUE' })
-  }))(ReportFab)
+const ConnectedFab = connect(null, (dispatch, ownProps) => ({
+  openForm: () => {
+    dispatch({ type: 'CREATE_ISSUE' })
+    dispatch(setMapCenter(ownProps.userLocation))
+  }
+}))(ReportFab)
 
-const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom, userLocation }) => {
+const Overlay = ({
+  setMapMode,
+  reports,
+  mapCenter,
+  setMapCenter,
+  setMapZoom,
+  userLocation
+}) => {
   const coordText = humanizeLocation(mapCenter)
   const reportsArray = Object.values(reports)
   const title = coordText + ', ' + reportsArray.length + ' nearby issues'
@@ -46,14 +65,24 @@ const Overlay = ({ setMapMode, reports, mapCenter, setMapCenter, setMapZoom, use
   return (
     <div className={style.overlay}>
       <Paper className={style.header} elevation={1}>
-        <Button color='primary' onClick={() => {
-          setMapCenter(reportsCenter)
-          setMapZoom(12)
-        }}>{title}</Button>
+        <Button
+          color='primary'
+          onClick={() => {
+            setMapCenter(reportsCenter)
+            setMapZoom(12)
+          }}
+        >
+          {title}
+        </Button>
       </Paper>
       <div className={style.footer}>
-        <MapControls setMapMode={setMapMode} setMapCenter={setMapCenter} setMapZoom={setMapZoom} userLocation={userLocation} />
-        <ConnectedFab />
+        <MapControls
+          setMapMode={setMapMode}
+          setMapCenter={setMapCenter}
+          setMapZoom={setMapZoom}
+          userLocation={userLocation}
+        />
+        <ConnectedFab userLocation={userLocation} />
       </div>
     </div>
   )
