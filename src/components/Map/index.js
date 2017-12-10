@@ -52,17 +52,23 @@ const DumbPopup = ({ report, openIssue, closeIssue }) => (
   </Popup>
 )
 
-const mapReportDispatch = (dispatch, props) => ({
-  openIssue: () =>
-    dispatch({
-      type: 'VIEW_ISSUE',
-      payload: { issueId: props.report.id }
-    }),
-  closeIssue: () =>
-    dispatch({
-      type: 'HOME'
-    })
-})
+const mapReportDispatch = (dispatch, props) => {
+  const { report } = props
+
+  return {
+    openIssue: () => {
+      dispatch({
+        type: 'VIEW_ISSUE',
+        payload: { issueId: props.report.id }
+      })
+      dispatch(setMapCenter(report.location))
+    },
+    closeIssue: () =>
+      dispatch({
+        type: 'HOME'
+      })
+  }
+}
 
 const ReportPopup = connect(null, mapReportDispatch)(DumbPopup)
 

@@ -24,22 +24,13 @@ const getDrawerContent = (page, payload) => {
 const isDrawerPage = page => _.includes(['CREATE_ISSUE', 'VIEW_ISSUE'], page)
 
 const DrawerWithContent = ({ page, close }) => (
-  <Drawer
-    anchor='bottom'
-    open={isDrawerPage(page)}
-    onRequestClose={close}
-    type='persistent'
-  >
+  <Drawer anchor='bottom' open={isDrawerPage(page)} type='persistent'>
     {getDrawerContent(page)}
   </Drawer>
 )
 
 const mapStateToProps = state => ({
   page: state.location.type
-})
-
-const mapDispatchToProps = dispatch => ({
-  close: () => dispatch({ type: 'HOME' })
 })
 
 const BottomDrawer = connect(mapStateToProps, mapDispatchToProps)(
