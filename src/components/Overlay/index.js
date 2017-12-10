@@ -64,17 +64,6 @@ const Overlay = ({
   const reportsCenter = getReportsCenter(reportsArray)
   return (
     <div className={style.overlay}>
-      <Paper className={style.header} elevation={1}>
-        <Button
-          color='primary'
-          onClick={() => {
-            setMapCenter(reportsCenter)
-            setMapZoom(12)
-          }}
-        >
-          {title}
-        </Button>
-      </Paper>
       <div className={style.footer}>
         <MapControls
           setMapMode={setMapMode}

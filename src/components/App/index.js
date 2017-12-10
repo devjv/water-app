@@ -7,6 +7,7 @@ import MapView from '../Map'
 import Overlay from '../Overlay'
 import IssueDetails from '../issue-details'
 import { CurrentLocationIssueForm } from '../issue-form'
+import Header from '../header'
 
 import style from './app.scss'
 
@@ -42,9 +43,14 @@ const BottomDrawer = connect(mapStateToProps)(DrawerWithContent)
 
 const App = () => (
   <div className={style.app}>
-    <div className={style.contentPage}>
+    <div className={style.headerContainer}>
+      <Header />
+    </div>
+    <div className={style.mapContainer}>
       <MapView />
-      <Overlay />
+    </div>
+    <Overlay />
+    <div className={style.drawerContainer}>
       <BottomDrawer />
     </div>
   </div>

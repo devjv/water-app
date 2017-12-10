@@ -17,3 +17,23 @@
 .drawerPaper {
   position: relative !important;
 }
+
+.headerContainer {
+  position: relative;
+  z-index: 9999;
+  flex: 0 0 auto;
+}
+
+.mapContainer {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.drawerContainer {
+  position: relative;
+  z-index: 9999;
+  flex: 0 0 auto;
+}

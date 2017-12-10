@@ -123,22 +123,20 @@ class MapView extends React.Component {
     const { onClick, mapZoom, mapCenter, reports, userLocation } = this.props
 
     return (
-      <div className={style.mapContainer}>
-        <Map
-          onClick={onClick}
-          className={style.map}
-          center={mapCenter}
-          attributionControl={false}
-          zoomControl={false}
-          onViewportChanged={this.onViewportChanged}
-          useFlyTo
-          zoom={mapZoom || 13}
-        >
-          <TileLayer url={this.getTileUrl()} />
-          <ReportsLayer reports={reports} />
-          <UserLayer userLocation={userLocation} />
-        </Map>
-      </div>
+      <Map
+        onClick={onClick}
+        className={style.map}
+        center={mapCenter}
+        attributionControl={false}
+        zoomControl={false}
+        onViewportChanged={this.onViewportChanged}
+        useFlyTo
+        zoom={mapZoom || 13}
+      >
+        <TileLayer url={this.getTileUrl()} />
+        <ReportsLayer reports={reports} />
+        <UserLayer userLocation={userLocation} />
+      </Map>
     )
   }
 }
