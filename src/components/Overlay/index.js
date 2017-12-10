@@ -46,6 +46,7 @@ const ReportFab = ({ openForm }) => (
 const ConnectedFab = connect(null, (dispatch, ownProps) => ({
   openForm: () => {
     dispatch({ type: 'CREATE_ISSUE' })
+    window.dispatchEvent(new Event('resize'))
     dispatch(setMapCenter(ownProps.userLocation))
   }
 }))(ReportFab)

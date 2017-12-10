@@ -61,12 +61,15 @@ const mapReportDispatch = (dispatch, props) => {
         type: 'VIEW_ISSUE',
         payload: { issueId: props.report.id }
       })
+      window.dispatchEvent(new Event('resize'))
       dispatch(setMapCenter(report.location))
     },
-    closeIssue: () =>
+    closeIssue: () => {
       dispatch({
         type: 'HOME'
       })
+      window.dispatchEvent(new Event('resize'))
+    }
   }
 }
 
@@ -152,7 +155,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   setMapCenter: center => dispatch(setMapCenter(center)),
   setMapZoom: zoom => dispatch(setMapZoom(zoom)),
-  onClick: () => dispatch({ type: 'HOME' })
+  onClick: () => {
+    dispatch({ type: 'HOME' })
+    window.dispatchEvent(new Event('resize'))
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapView)
