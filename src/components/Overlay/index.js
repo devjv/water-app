@@ -41,12 +41,7 @@ const Overlay = ({
   return (
     <div className={style.overlay}>
       <div className={style.footer}>
-        <MapControls
-          setMapMode={setMapMode}
-          setMapCenter={setMapCenter}
-          setMapZoom={setMapZoom}
-          userLocation={userLocation}
-        />
+        <MapControls />
         <ConnectedFab userLocation={userLocation} />
       </div>
     </div>

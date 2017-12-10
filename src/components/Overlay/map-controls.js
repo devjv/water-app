@@ -4,28 +4,15 @@ import Paper from 'material-ui/Paper'
 import IconButton from 'material-ui/IconButton'
 import style from './overlay.scss'
 import { connect } from 'react-redux'
-import { setMapMode, setMapZoom } from '../../store/actions'
+import { setMapMode, setMapZoom, setMapCenter } from '../../store/actions'
 
-const MapControls = ({
-  setMapMode,
-  setMapCenter,
-  setMapZoom,
-  userLocation,
-  onToggleMapMode,
-  mapMode
-}) => (
+const MapControls = ({ mapMode, onToggleMapMode, onCenterUserPosition }) => (
   <Paper className={style.mapControls} elevation={1}>
     <div>
       <IconButton className={style.button} onClick={onToggleMapMode}>
         <Icon>{mapMode === 'street' ? 'satellite' : 'map'}</Icon>
       </IconButton>
-      <IconButton
-        className={style.button}
-        onClick={() => {
-          setMapCenter(userLocation)
-          setMapZoom(14)
-        }}
-      >
+      <IconButton className={style.button} onClick={onCenterUserPosition}>
         <Icon>my_location</Icon>
       </IconButton>
     </div>
@@ -33,15 +20,19 @@ const MapControls = ({
 )
 
 const mapStateToProps = state => ({
-  mapMode: state.map.mode
+  mapMode: state.map.mode,
+  userLocation: state.map.userLocation
 })
 
-const mergeProps = (stateProps, { dispatch }, ownProps) => ({
-  ...stateProps,
+const mergeProps = ({ mapMode, userLocation }, { dispatch }, ownProps) => ({
   ...ownProps,
+  onCenterUserPosition: () => {
+    dispatch(setMapCenter(userLocation))
+    dispatch(setMapZoom(14))
+  },
   onToggleMapMode: () => {
-    const mapMode = stateProps.mapMode === 'street' ? 'sat' : 'street'
-    dispatch(setMapMode(mapMode))
+    const nextMapMode = mapMode === 'street' ? 'sat' : 'street'
+    dispatch(setMapMode(nextMapMode))
   }
 })
 
