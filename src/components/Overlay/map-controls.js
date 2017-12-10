@@ -26,6 +26,7 @@ const mapStateToProps = state => ({
 
 const mergeProps = ({ mapMode, userLocation }, { dispatch }, ownProps) => ({
   ...ownProps,
+  mapMode,
   onCenterUserPosition: () => {
     dispatch(setMapCenter(userLocation))
     dispatch(setMapZoom(14))
