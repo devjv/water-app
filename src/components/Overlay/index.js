@@ -4,6 +4,7 @@ import Button from 'material-ui/Button'
 import Icon from 'material-ui/Icon'
 import Paper from 'material-ui/Paper'
 import IconButton from 'material-ui/IconButton'
+import { refreshMap } from '../../lib/map-helpers'
 
 import { humanizeLocation, getReportsCenter } from '../../lib/location'
 import { setMapMode, setMapCenter, setMapZoom } from '../../store/actions'
@@ -46,8 +47,8 @@ const ReportFab = ({ openForm }) => (
 const ConnectedFab = connect(null, (dispatch, ownProps) => ({
   openForm: () => {
     dispatch({ type: 'CREATE_ISSUE' })
-    window.dispatchEvent(new Event('resize'))
     dispatch(setMapCenter(ownProps.userLocation))
+    refreshMap()
   }
 }))(ReportFab)
 

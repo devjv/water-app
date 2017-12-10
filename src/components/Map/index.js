@@ -3,6 +3,7 @@ import Leaflet from 'leaflet'
 import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, LayerGroup } from 'react-leaflet'
 import moment from 'moment'
+import { refreshMap } from '../../lib/map-helpers'
 
 // import { getReportsCenter } from '../../lib/location'
 import { setMapCenter, setMapZoom } from '../../store/actions'
@@ -61,14 +62,14 @@ const mapReportDispatch = (dispatch, props) => {
         type: 'VIEW_ISSUE',
         payload: { issueId: props.report.id }
       })
-      window.dispatchEvent(new Event('resize'))
       dispatch(setMapCenter(report.location))
+      refreshMap()
     },
     closeIssue: () => {
       dispatch({
         type: 'HOME'
       })
-      window.dispatchEvent(new Event('resize'))
+      refreshMap()
     }
   }
 }
