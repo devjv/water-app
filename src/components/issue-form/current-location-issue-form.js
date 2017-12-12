@@ -1,7 +1,7 @@
 import IssueForm from './issue-form'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { formAction } from '../../store/actions'
+import { formAction, locateUserThunk } from '../../store/actions'
 
 const mapStateToProps = state => ({
   location: state.map.center,
@@ -21,6 +21,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     onChange: e => {
       dispatch(formAction(e.target.name, e.target.value))
     },
+    onGetLocation: () => dispatch(locateUserThunk()),
     onSubmit: () => {
       dispatch({
         type: 'ADD_REPORT',

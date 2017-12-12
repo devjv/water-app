@@ -32,12 +32,17 @@ export const locateUser = pending => ({
 
 // This is not used at the moment:
 export function locateUserThunk () {
-  return dispatch => {
-    dispatch(locateUser(true))
-    setTimeout(() => {
-      dispatch(locateUser(false))
-      dispatch(setMapCenter(mockUserLocation))
-    }, 1000)
+  return (dispatch, getState) => {
+    const { userLocation } = getState().map
+    if (userLocation) {
+      dispatch(setMapCenter(userLocation))
+    } else {
+      dispatch(locateUser(true))
+      setTimeout(() => {
+        dispatch(locateUser(false))
+        dispatch(setMapCenter(mockUserLocation))
+      }, 1000)
+    }
   }
 }
 
