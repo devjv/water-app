@@ -62,7 +62,8 @@ const initialMap = {
   center: mockUserLocation,
   zoom: 14,
   userLocation: mockUserLocation,
-  locationPending: false
+  locationPending: false,
+  isPanning: false
 }
 
 export const map = (state = initialMap, action) => {
@@ -86,6 +87,11 @@ export const map = (state = initialMap, action) => {
       return {
         ...state,
         locationPending: action.payload.pending
+      }
+    case 'SET_PANNING':
+      return {
+        ...state,
+        isPanning: action.payload.isPanning
       }
     default:
       return state

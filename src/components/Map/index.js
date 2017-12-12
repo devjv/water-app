@@ -6,7 +6,7 @@ import moment from 'moment'
 import { refreshMap } from '../../lib/map-helpers'
 
 // import { getReportsCenter } from '../../lib/location'
-import { setMapCenter, setMapZoom } from '../../store/actions'
+import { setMapCenter, setMapZoom, setPanning } from '../../store/actions'
 import style from './map.scss'
 
 const satelliteTileUrl =
@@ -110,6 +110,13 @@ class MapView extends React.Component {
   //     this.props.setMapCenter(center)
   //   }
   // }
+  componentDidMount () {
+    if (this.refs.map) {
+      this.refs.map.leafletElement.on('dragstart', () => {
+        this.props.setMapPanning(true)
+      })
+    }
+  }
   getTileUrl = () => {
     const mode = this.props.mapMode
     if (mode === 'street') {
@@ -120,12 +127,14 @@ class MapView extends React.Component {
   }
 
   onViewportChanged = ({ center, zoom }) => {
-    const location = {
-      lat: center[0],
-      lon: center[1]
+    if (this.props.isPanning) {
+      const location = {
+        lat: center[0],
+        lon: center[1]
+      }
+      this.props.setMapCenter(location)
+      this.props.setMapZoom(zoom)
     }
-    this.props.setMapCenter(location)
-    this.props.setMapZoom(zoom)
   }
 
   render () {
@@ -138,8 +147,9 @@ class MapView extends React.Component {
         center={mapCenter}
         attributionControl={false}
         zoomControl={false}
-        onViewportChanged={this.onViewportChanged}
+        onViewportChange={this.onViewportChanged}
         useFlyTo
+        ref='map'
         zoom={mapZoom || 13}
       >
         <TileLayer url={this.getTileUrl()} />
@@ -157,12 +167,14 @@ const mapStateToProps = state => ({
   mapCenter: state.map.center,
   mapZoom: state.map.zoom,
   userLocation: state.map.userLocation,
+  isPanning: state.map.isPanning,
   view: state.location.type
 })
 
 const mapDispatchToProps = dispatch => ({
   setMapCenter: center => dispatch(setMapCenter(center)),
   setMapZoom: zoom => dispatch(setMapZoom(zoom)),
+  setMapPanning: b => dispatch(setPanning(b)),
   onClick: () => {
     dispatch({ type: 'HOME' })
     window.dispatchEvent(new Event('resize'))

@@ -15,6 +15,11 @@ export const setMapMode = mode => ({
   payload: { mode }
 })
 
+export const setPanning = isPanning => ({
+  type: 'SET_PANNING',
+  payload: { isPanning }
+})
+
 export const setMapCenter = center => ({
   type: 'SET_MAP_CENTER',
   payload: { center }
@@ -34,6 +39,7 @@ export const locateUser = pending => ({
 export function locateUserThunk () {
   return (dispatch, getState) => {
     const { userLocation } = getState().map
+    dispatch(setPanning(false))
     if (userLocation) {
       dispatch(setMapCenter(userLocation))
     } else {
