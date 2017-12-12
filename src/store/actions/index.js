@@ -52,6 +52,10 @@ export function locateUserThunk () {
   }
 }
 
+export const clearForm = {
+  type: 'CLEAR_FORM'
+}
+
 export const formAction = (key, value) => ({
   type: 'SET_FORM_VALUE',
   payload: { key, value }

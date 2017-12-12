@@ -1,7 +1,7 @@
 import IssueForm from './issue-form'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { formAction, locateUserThunk } from '../../store/actions'
+import { formAction, locateUserThunk, clearForm } from '../../store/actions'
 
 const mapStateToProps = state => ({
   location: state.map.center,
@@ -34,6 +34,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
           }
         }
       })
+      dispatch(clearForm)
       dispatch({ type: 'HOME' })
     }
   }

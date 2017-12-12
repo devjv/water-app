@@ -111,6 +111,8 @@ export const form = (state = initialForm, action) => {
         ...state,
         [action.payload.key]: action.payload.value
       }
+    case 'CLEAR_FORM':
+      return initialForm
     default:
       return state
   }
