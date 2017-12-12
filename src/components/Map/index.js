@@ -126,7 +126,7 @@ class MapView extends React.Component {
     }
   }
 
-  onViewportChanged = ({ center, zoom }) => {
+  handleViewport = ({ center, zoom }) => {
     if (this.props.isPanning) {
       const location = {
         lat: center[0],
@@ -139,6 +139,7 @@ class MapView extends React.Component {
 
   render () {
     const { onClick, mapZoom, mapCenter, reports, userLocation, view } = this.props
+    const creatingIssue = this.props.view === 'CREATE_ISSUE'
 
     return (
       <Map
@@ -147,7 +148,8 @@ class MapView extends React.Component {
         center={mapCenter}
         attributionControl={false}
         zoomControl={false}
-        onViewportChange={this.onViewportChanged}
+        onViewportChange={creatingIssue && this.handleViewport}
+        onViewportChanged={!creatingIssue && this.handleViewport}
         useFlyTo
         ref='map'
         zoom={mapZoom || 13}
