@@ -91,3 +91,21 @@ export const map = (state = initialMap, action) => {
       return state
   }
 }
+
+const initialForm = {
+  priority: 'low',
+  description: '',
+  photos: []
+}
+
+export const form = (state = initialForm, action) => {
+  switch (action.type) {
+    case 'SET_FORM_VALUE':
+      return {
+        ...state,
+        [action.payload.key]: action.payload.value
+      }
+    default:
+      return state
+  }
+}

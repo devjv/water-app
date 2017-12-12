@@ -1,9 +1,13 @@
 import IssueForm from './issue-form'
 import { connect } from 'react-redux'
-import { compose, withStateHandlers } from 'recompose'
+import { compose } from 'recompose'
+import { formAction } from '../../store/actions'
 
-const mapStateToProps = ({ map: { center } }) => ({
-  location: center
+const mapStateToProps = state => ({
+  location: state.map.center,
+  description: state.form.description,
+  priority: state.form.priority,
+  photos: state.form.photos
 })
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
@@ -14,6 +18,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return {
     ...ownProps,
     ...stateProps,
+    onChange: e => {
+      dispatch(formAction(e.target.name, e.target.value))
+    },
     onSubmit: () => {
       dispatch({
         type: 'ADD_REPORT',
@@ -31,21 +38,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 }
 
-const stateHandlers = {
-  onChange: state => event => {
-    return {
-      ...state,
-      [event.target.name]: event.target.value
-    }
-  }
-}
-
-const initialState = {
-  priority: 'low',
-  description: ''
-}
-
 export default compose(
-  withStateHandlers(initialState, stateHandlers),
   connect(mapStateToProps, null, mergeProps)
 )(IssueForm)

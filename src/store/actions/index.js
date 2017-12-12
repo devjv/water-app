@@ -40,3 +40,8 @@ export function locateUserThunk () {
     }, 1000)
   }
 }
+
+export const formAction = (key, value) => ({
+  type: 'SET_FORM_VALUE',
+  payload: { key, value }
+})

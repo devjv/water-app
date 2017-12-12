@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 import createHistory from 'history/createBrowserHistory'
 import queryString from 'query-string'
 
-import { reports, map } from './reducers'
+import { reports, map, form } from './reducers'
 
 const history = createHistory()
 
@@ -25,7 +25,8 @@ const {
 const rootReducer = combineReducers({
   location: routeReducer,
   reports,
-  map
+  map,
+  form
 })
 
 const middlewares = applyMiddleware(routeMiddleware, thunk)
