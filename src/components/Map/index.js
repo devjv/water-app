@@ -96,6 +96,11 @@ const UserLayer = ({ userLocation }) => (
   </LayerGroup>
 )
 
+const PinLayer = ({ pinLocation }) => (
+  <LayerGroup>
+    <Marker position={pinLocation} />
+  </LayerGroup>
+)
 class MapView extends React.Component {
   // Use this if the initial map should be centered according to the reports instead of the user locations
   // componentDidMount () {
@@ -124,7 +129,7 @@ class MapView extends React.Component {
   }
 
   render () {
-    const { onClick, mapZoom, mapCenter, reports, userLocation } = this.props
+    const { onClick, mapZoom, mapCenter, reports, userLocation, view } = this.props
 
     return (
       <Map
@@ -140,6 +145,7 @@ class MapView extends React.Component {
         <TileLayer url={this.getTileUrl()} />
         <ReportsLayer reports={reports} />
         <UserLayer userLocation={userLocation} />
+        { view === 'CREATE_ISSUE' && <PinLayer pinLocation={mapCenter} /> }
       </Map>
     )
   }
@@ -150,7 +156,8 @@ const mapStateToProps = state => ({
   mapMode: state.map.mode,
   mapCenter: state.map.center,
   mapZoom: state.map.zoom,
-  userLocation: state.map.userLocation
+  userLocation: state.map.userLocation,
+  view: state.location.type
 })
 
 const mapDispatchToProps = dispatch => ({
