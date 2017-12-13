@@ -217,7 +217,7 @@ const mapDispatchToProps = dispatch => ({
   setMapPanning: b => dispatch(setPanning(b)),
   onClick: () => {
     dispatch({ type: 'HOME' })
-    window.dispatchEvent(new Event('resize'))
+    refreshMap()
   }
 })
 

@@ -1,21 +1,12 @@
 import React from 'react'
-import TextField from 'material-ui/TextField'
-import {
-  FormLabel,
-  FormControl,
-  FormControlLabel,
-  FormHelperText
-} from 'material-ui/Form'
-import Divider from 'material-ui/Divider'
+import { FormControl, FormControlLabel, FormHelperText } from 'material-ui/Form'
 import Radio, { RadioGroup } from 'material-ui/Radio'
 import Button from 'material-ui/Button'
 import Icon from 'material-ui/Icon'
-import Paper from 'material-ui/Paper'
-import Typography from 'material-ui/Typography'
 import Grid from 'material-ui/Grid'
 import styles from './index.scss'
 import IconButton from 'material-ui/IconButton'
-import Input, { InputLabel, InputAdornment } from 'material-ui/Input'
+import Input, { InputAdornment } from 'material-ui/Input'
 import { humanizeLocation } from '../../lib/location'
 import DrawerTitle from '../drawer-title'
 

@@ -3,7 +3,7 @@ import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
 import { connect } from 'react-redux'
 import { humanizeLocation, getReportsCenter } from '../../lib/location'
-import { setMapMode, setMapCenter, setMapZoom } from '../../store/actions'
+import { setMapCenter, setMapZoom } from '../../store/actions'
 import style from './index.scss'
 
 const Header = props => {

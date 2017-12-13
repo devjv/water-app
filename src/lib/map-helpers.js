@@ -1,5 +1,5 @@
 export function refreshMap () {
   setTimeout(() => {
-    window.dispatchEvent(new Event('resize'))
+    window.dispatchEvent(new window.Event('resize'))
   })
 }
