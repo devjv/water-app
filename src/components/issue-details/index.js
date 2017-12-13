@@ -7,12 +7,29 @@ import { humanizeLocation } from '../../lib/location'
 import IssueStatus from '../issue-status'
 import Button from 'material-ui/Button'
 import moment from 'moment'
+import DrawerTitle from '../drawer-title'
+import styles from './index.scss'
+import { LOW, MEDIUM, HIGH } from '../../lib/issue'
+
+const priorityColors = {
+  [LOW]: '#46AA96',
+  [MEDIUM]: '#3182BD',
+  [HIGH]: '#DE2C26'
+}
 
 const IssueDetails = ({ issue, onDelete }) => {
-  const { location, description, status, canDelete, updatedAt } = issue
+  const {
+    location,
+    description,
+    status,
+    canDelete,
+    updatedAt,
+    priority
+  } = issue
   return (
-    <div>
-      <Grid container justify='center'>
+    <div style={{ overflowX: 'hidden' }}>
+      <DrawerTitle>Issue Details</DrawerTitle>
+      <Grid container justify='center' spacing={12}>
         <Grid item xs={10}>
           <FormControl margin='normal' fullWidth>
             <FormHelperText>Issue Location</FormHelperText>
@@ -24,6 +41,16 @@ const IssueDetails = ({ issue, onDelete }) => {
             <FormHelperText>Issue Description</FormHelperText>
             <Typography type='body1' component='p'>
               {description}
+            </Typography>
+          </FormControl>
+          <FormControl margin='normal' fullWidth>
+            <FormHelperText>Issue Priority</FormHelperText>
+            <Typography type='body1' component='p'>
+              <div
+                className={styles.priorityColors}
+                style={{ backgroundColor: priorityColors[priority] }}
+              />
+              {priority}
             </Typography>
           </FormControl>
           <FormControl margin='normal' fullWidth>

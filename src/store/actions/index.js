@@ -15,6 +15,11 @@ export const setMapMode = mode => ({
   payload: { mode }
 })
 
+export const setPanning = isPanning => ({
+  type: 'SET_PANNING',
+  payload: { isPanning }
+})
+
 export const setMapCenter = center => ({
   type: 'SET_MAP_CENTER',
   payload: { center }
@@ -32,11 +37,26 @@ export const locateUser = pending => ({
 
 // This is not used at the moment:
 export function locateUserThunk () {
-  return dispatch => {
-    dispatch(locateUser(true))
-    setTimeout(() => {
-      dispatch(locateUser(false))
-      dispatch(setMapCenter(mockUserLocation))
-    }, 1000)
+  return (dispatch, getState) => {
+    const { userLocation } = getState().map
+    dispatch(setPanning(false))
+    if (userLocation) {
+      dispatch(setMapCenter(userLocation))
+    } else {
+      dispatch(locateUser(true))
+      setTimeout(() => {
+        dispatch(locateUser(false))
+        dispatch(setMapCenter(mockUserLocation))
+      }, 1000)
+    }
   }
 }
+
+export const clearForm = {
+  type: 'CLEAR_FORM'
+}
+
+export const formAction = (key, value) => ({
+  type: 'SET_FORM_VALUE',
+  payload: { key, value }
+})

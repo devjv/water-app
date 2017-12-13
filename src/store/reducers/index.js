@@ -62,7 +62,8 @@ const initialMap = {
   center: mockUserLocation,
   zoom: 14,
   userLocation: mockUserLocation,
-  locationPending: false
+  locationPending: false,
+  isPanning: false
 }
 
 export const map = (state = initialMap, action) => {
@@ -87,6 +88,31 @@ export const map = (state = initialMap, action) => {
         ...state,
         locationPending: action.payload.pending
       }
+    case 'SET_PANNING':
+      return {
+        ...state,
+        isPanning: action.payload.isPanning
+      }
+    default:
+      return state
+  }
+}
+
+const initialForm = {
+  priority: 'low',
+  description: '',
+  photos: []
+}
+
+export const form = (state = initialForm, action) => {
+  switch (action.type) {
+    case 'SET_FORM_VALUE':
+      return {
+        ...state,
+        [action.payload.key]: action.payload.value
+      }
+    case 'CLEAR_FORM':
+      return initialForm
     default:
       return state
   }

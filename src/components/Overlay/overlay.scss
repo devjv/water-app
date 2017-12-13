@@ -30,13 +30,15 @@
 }
 
 .footer {
+  flex: 1 1 auto;
   display: flex;
   justify-content: space-between;
   pointer-events: none;
 }
 
 .fab {
-  margin: 2em;
+  width: 100%;
+  margin: 5%;
   pointer-events: initial;
   align-self: flex-end;
 }
@@ -44,7 +46,7 @@
 .mapControls {
   flex: 0;
   display: inline-block;
-  padding: .2em;
+  padding: 0.2em;
   align-self: flex-end;
   background: white;
   border-top-right-radius: 1em !important;

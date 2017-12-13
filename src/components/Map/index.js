@@ -3,9 +3,19 @@ import Leaflet from 'leaflet'
 import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, LayerGroup } from 'react-leaflet'
 import moment from 'moment'
+import { refreshMap } from '../../lib/map-helpers'
+import {
+  REPORTED,
+  SCHEDULED,
+  IN_PROGRESS,
+  LOW,
+  MEDIUM,
+  HIGH
+} from '../../lib/issue'
+import set from 'lodash/set'
 
 // import { getReportsCenter } from '../../lib/location'
-import { setMapCenter, setMapZoom } from '../../store/actions'
+import { setMapCenter, setMapZoom, setPanning } from '../../store/actions'
 import style from './map.scss'
 
 const satelliteTileUrl =
@@ -16,20 +26,42 @@ const streetTileUrl =
 
 const StatusIcon = Leaflet.Icon.extend({
   options: {
-    iconSize: [40, 36],
+    iconSize: [36, 36],
     iconAnchor: [20, 18],
     popupAnchor: [0, -20]
   }
 })
 
-const prioIcons = {
-  low: new StatusIcon({ iconUrl: 'src/assets/prio0.png' }),
-  medium: new StatusIcon({ iconUrl: 'src/assets/prio1.png' }),
-  high: new StatusIcon({ iconUrl: 'src/assets/prio2.png' })
+const statusNames = {
+  [REPORTED]: 'reported',
+  [SCHEDULED]: 'scheduled',
+  [IN_PROGRESS]: 'in_progress'
 }
 
+function generateIcons () {
+  const icons = {}
+  const statuses = [REPORTED, SCHEDULED, IN_PROGRESS]
+  const priorities = [LOW, MEDIUM, HIGH]
+
+  statuses.forEach(status => {
+    priorities.forEach(priority => {
+      set(
+        icons,
+        [status, priority],
+        new StatusIcon({
+          iconUrl: `/src/assets/${statusNames[String(status)]}_${priority}.png`
+        })
+      )
+    })
+  })
+
+  return icons
+}
+
+const prioIcons = generateIcons()
+
 var userIcon = Leaflet.icon({
-  iconUrl: 'src/assets/user.png',
+  iconUrl: '/src/assets/user.png',
   iconSize: [30, 30],
   iconAnchor: [15, 15]
 })
@@ -39,7 +71,12 @@ var formatTime = function (timestamp) {
 }
 
 const DumbPopup = ({ report, openIssue, closeIssue }) => (
-  <Popup className={style.popup} closeButton={false} onOpen={openIssue} onClose={closeIssue} >
+  <Popup
+    className={style.popup}
+    closeButton={false}
+    onOpen={openIssue}
+    onClose={closeIssue}
+  >
     <div>
       <p>{report.description}</p>
       <p>Updated {formatTime(report.updatedAt)}</p>
@@ -47,17 +84,26 @@ const DumbPopup = ({ report, openIssue, closeIssue }) => (
   </Popup>
 )
 
-const mapReportDispatch = (dispatch, props) => ({
-  openIssue: () =>
-    dispatch({
-      type: 'VIEW_ISSUE',
-      payload: { issueId: props.report.id }
-    }),
-  closeIssue: () =>
-    dispatch({
-      type: 'HOME'
-    })
-})
+const mapReportDispatch = (dispatch, props) => {
+  const { report } = props
+
+  return {
+    openIssue: () => {
+      dispatch({
+        type: 'VIEW_ISSUE',
+        payload: { issueId: props.report.id }
+      })
+      dispatch(setMapCenter(report.location))
+      refreshMap()
+    },
+    closeIssue: () => {
+      dispatch({
+        type: 'HOME'
+      })
+      refreshMap()
+    }
+  }
+}
 
 const ReportPopup = connect(null, mapReportDispatch)(DumbPopup)
 
@@ -67,7 +113,7 @@ const ReportsLayer = ({ reports }) => (
       <Marker
         key={report.id}
         position={report.location}
-        icon={prioIcons[report.priority]}
+        icon={prioIcons[report.status][report.priority]}
       >
         <ReportPopup report={report} />
       </Marker>
@@ -81,6 +127,11 @@ const UserLayer = ({ userLocation }) => (
   </LayerGroup>
 )
 
+const PinLayer = ({ pinLocation }) => (
+  <LayerGroup>
+    <Marker position={pinLocation} />
+  </LayerGroup>
+)
 class MapView extends React.Component {
   // Use this if the initial map should be centered according to the reports instead of the user locations
   // componentDidMount () {
@@ -90,6 +141,13 @@ class MapView extends React.Component {
   //     this.props.setMapCenter(center)
   //   }
   // }
+  componentDidMount () {
+    if (this.refs.map) {
+      this.refs.map.leafletElement.on('dragstart', () => {
+        this.props.setMapPanning(true)
+      })
+    }
+  }
   getTileUrl = () => {
     const mode = this.props.mapMode
     if (mode === 'street') {
@@ -98,31 +156,47 @@ class MapView extends React.Component {
       return satelliteTileUrl
     }
   }
-  onViewportChanged = ({ center, zoom }) => {
-    const location = {
-      lat: center[0],
-      lon: center[1]
+
+  handleViewport = ({ center, zoom }) => {
+    if (this.props.isPanning) {
+      const location = {
+        lat: center[0],
+        lon: center[1]
+      }
+      this.props.setMapCenter(location)
+      this.props.setMapZoom(zoom)
     }
-    this.props.setMapCenter(location)
-    this.props.setMapZoom(zoom)
   }
+
   render () {
+    const {
+      onClick,
+      mapZoom,
+      mapCenter,
+      reports,
+      userLocation,
+      view
+    } = this.props
+    const creatingIssue = this.props.view === 'CREATE_ISSUE'
+
     return (
-      <div className={style.mapContainer}>
-        <Map
-          className={style.map}
-          center={this.props.mapCenter}
-          attributionControl={false}
-          zoomControl={false}
-          onViewportChanged={this.onViewportChanged}
-          useFlyTo
-          zoom={this.props.mapZoom || 13}
-        >
-          <TileLayer url={this.getTileUrl()} />
-          <ReportsLayer reports={this.props.reports} />
-          <UserLayer userLocation={this.props.userLocation} />
-        </Map>
-      </div>
+      <Map
+        onClick={onClick}
+        className={style.map}
+        center={mapCenter}
+        attributionControl={false}
+        zoomControl={false}
+        onViewportChange={creatingIssue && this.handleViewport}
+        onViewportChanged={!creatingIssue && this.handleViewport}
+        useFlyTo
+        ref='map'
+        zoom={mapZoom || 13}
+      >
+        <TileLayer url={this.getTileUrl()} />
+        <ReportsLayer reports={reports} />
+        <UserLayer userLocation={userLocation} />
+        {view === 'CREATE_ISSUE' && <PinLayer pinLocation={mapCenter} />}
+      </Map>
     )
   }
 }
@@ -132,12 +206,19 @@ const mapStateToProps = state => ({
   mapMode: state.map.mode,
   mapCenter: state.map.center,
   mapZoom: state.map.zoom,
-  userLocation: state.map.userLocation
+  userLocation: state.map.userLocation,
+  isPanning: state.map.isPanning,
+  view: state.location.type
 })
 
 const mapDispatchToProps = dispatch => ({
   setMapCenter: center => dispatch(setMapCenter(center)),
-  setMapZoom: zoom => dispatch(setMapZoom(zoom))
+  setMapZoom: zoom => dispatch(setMapZoom(zoom)),
+  setMapPanning: b => dispatch(setPanning(b)),
+  onClick: () => {
+    dispatch({ type: 'HOME' })
+    refreshMap()
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapView)

@@ -7,6 +7,7 @@ import MapView from '../Map'
 import Overlay from '../Overlay'
 import IssueDetails from '../issue-details'
 import { CurrentLocationIssueForm } from '../issue-form'
+import Header from '../header'
 
 import style from './app.scss'
 
@@ -27,8 +28,8 @@ const DrawerWithContent = ({ page, close }) => (
   <Drawer
     anchor='bottom'
     open={isDrawerPage(page)}
-    onRequestClose={close}
     type='persistent'
+    classes={{ paper: style.drawerPaper }}
   >
     {getDrawerContent(page)}
   </Drawer>
@@ -38,19 +39,18 @@ const mapStateToProps = state => ({
   page: state.location.type
 })
 
-const mapDispatchToProps = dispatch => ({
-  close: () => dispatch({ type: 'HOME' })
-})
-
-const BottomDrawer = connect(mapStateToProps, mapDispatchToProps)(
-  DrawerWithContent
-)
+const BottomDrawer = connect(mapStateToProps)(DrawerWithContent)
 
 const App = () => (
   <div className={style.app}>
-    <div className={style.contentPage}>
+    <div className={style.headerContainer}>
+      <Header />
+    </div>
+    <div className={style.mapContainer}>
       <MapView />
-      <Overlay />
+    </div>
+    <Overlay />
+    <div className={style.drawerContainer}>
       <BottomDrawer />
     </div>
   </div>

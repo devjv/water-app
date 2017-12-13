@@ -1,16 +1,14 @@
 import React from 'react'
-import TextField from 'material-ui/TextField'
-import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form'
+import { FormControl, FormControlLabel, FormHelperText } from 'material-ui/Form'
 import Radio, { RadioGroup } from 'material-ui/Radio'
 import Button from 'material-ui/Button'
 import Icon from 'material-ui/Icon'
-import Paper from 'material-ui/Paper'
-import Typography from 'material-ui/Typography'
 import Grid from 'material-ui/Grid'
 import styles from './index.scss'
 import IconButton from 'material-ui/IconButton'
-import Input, { InputLabel, InputAdornment } from 'material-ui/Input'
+import Input, { InputAdornment } from 'material-ui/Input'
 import { humanizeLocation } from '../../lib/location'
+import DrawerTitle from '../drawer-title'
 
 // priorities
 const LOW = 'low'
@@ -27,41 +25,48 @@ const IssueForm = ({
   onSubmit = f => f
 }) => (
   <form className={styles.form}>
-    <Grid container justify='center'>
+    <DrawerTitle>Create New Issue</DrawerTitle>
+    <Grid container justify='center' spacing={12}>
       <Grid item xs={10}>
         <FormControl
           name='location'
-          label='Location'
+          label='Issue Location'
           value={humanizeLocation(location)}
           required
           fullWidth
           disabled
           margin='normal'
         >
-          <InputLabel htmlFor='location'>Location</InputLabel>
+          <FormHelperText htmlFor='location'>Issue Location</FormHelperText>
           <Input
             type='text'
             value={humanizeLocation(location)}
             endAdornment={
-              <InputAdornment position='end'>
-                <IconButton onClick={onGetLocation}>
-                  <Icon>my_location</Icon>
+              <InputAdornment position='end' onClick={onGetLocation}>
+                <IconButton mini>
+                  <Icon size={10}>my_location</Icon>
                 </IconButton>
               </InputAdornment>
             }
           />
         </FormControl>
-        <TextField
+        <FormControl
           name='description'
           label='Issue Description'
-          value={description}
-          onChange={onChange}
+          value={humanizeLocation(location)}
           required
           fullWidth
           margin='normal'
-        />
+        >
+          <FormHelperText>Issue Description</FormHelperText>
+          <Input
+            type='text'
+            value={description}
+            placeholder='E.g. what is broken, symptoms'
+          />
+        </FormControl>
         <FormControl component='fieldset' required fullWidth margin='normal'>
-          <FormLabel component='legend'>Issue Priority</FormLabel>
+          <FormHelperText htmlFor='priority'>Issue Priority</FormHelperText>
           <RadioGroup
             aria-label='priority'
             name='priority'
@@ -79,17 +84,8 @@ const IssueForm = ({
           </RadioGroup>
         </FormControl>
         <FormControl margin='normal' fullWidth>
-          {photos.map(file => (
-            <Paper>
-              <Typography type='body1' component='p'>
-                {file.name}
-              </Typography>
-            </Paper>
-          ))}
-        </FormControl>
-        <FormControl margin='normal' fullWidth>
-          <Button raised>
-            <Icon>add_a_photo</Icon> Add Picture
+          <Button raised onClick={() => window.alert('Photo added')}>
+            <Icon className={styles.iconLeft}>add_a_photo</Icon> Add Picture
           </Button>
         </FormControl>
       </Grid>
