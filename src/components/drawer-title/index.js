@@ -6,15 +6,15 @@ import style from './index.scss'
 
 const DrawerTitle = ({ children }) => (
   <div>
-    <div className={style.container}>
-      <Grid container justify='center'>
-        <Grid item xs={10}>
-          <FormControl fullWidth>
-            <FormHelperText>{children}</FormHelperText>
-          </FormControl>
-        </Grid>
+    <Grid container justify='center'>
+      <Grid item xs={10}>
+        <FormControl fullWidth>
+          <FormHelperText className={style.container}>
+            {children}
+          </FormHelperText>
+        </FormControl>
       </Grid>
-    </div>
+    </Grid>
     <Divider />
   </div>
 )
