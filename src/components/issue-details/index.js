@@ -8,17 +8,15 @@ import { humanizeLocation } from '../../lib/location'
 import IssueStatus from '../issue-status'
 import Button from 'material-ui/Button'
 import moment from 'moment'
+import DrawerTitle from '../drawer-title'
 
 const IssueDetails = ({ issue, onDelete }) => {
   const { location, description, status, canDelete, updatedAt } = issue
   return (
     <div>
+      <DrawerTitle>Issue Details</DrawerTitle>
       <Grid container justify='center'>
         <Grid item xs={10}>
-          <FormControl margin='normal' fullWidth>
-            <FormHelperText>Issue Details</FormHelperText>
-          </FormControl>
-          <Divider />
           <FormControl margin='normal' fullWidth>
             <FormHelperText>Issue Location</FormHelperText>
             <Typography type='body1' component='p'>
