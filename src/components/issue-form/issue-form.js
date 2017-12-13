@@ -1,6 +1,12 @@
 import React from 'react'
 import TextField from 'material-ui/TextField'
-import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form'
+import {
+  FormLabel,
+  FormControl,
+  FormControlLabel,
+  FormHelperText
+} from 'material-ui/Form'
+import Divider from 'material-ui/Divider'
 import Radio, { RadioGroup } from 'material-ui/Radio'
 import Button from 'material-ui/Button'
 import Icon from 'material-ui/Icon'
@@ -29,6 +35,10 @@ const IssueForm = ({
   <form className={styles.form}>
     <Grid container justify='center'>
       <Grid item xs={10}>
+        <FormControl margin='normal' fullWidth>
+          <FormHelperText>Create New Issue</FormHelperText>
+        </FormControl>
+        <Divider />
         <FormControl
           name='location'
           label='Location'

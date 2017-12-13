@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Grid from 'material-ui/Grid'
 import { FormControl, FormHelperText } from 'material-ui/Form'
+import Divider from 'material-ui/Divider'
 import Typography from 'material-ui/Typography'
 import { humanizeLocation } from '../../lib/location'
 import IssueStatus from '../issue-status'
@@ -14,6 +15,10 @@ const IssueDetails = ({ issue, onDelete }) => {
     <div>
       <Grid container justify='center'>
         <Grid item xs={10}>
+          <FormControl margin='normal' fullWidth>
+            <FormHelperText>Issue Details</FormHelperText>
+          </FormControl>
+          <Divider />
           <FormControl margin='normal' fullWidth>
             <FormHelperText>Issue Location</FormHelperText>
             <Typography type='body1' component='p'>
