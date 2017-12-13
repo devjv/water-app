@@ -4,6 +4,15 @@ import { connect } from 'react-redux'
 import { Map, Marker, Popup, TileLayer, LayerGroup } from 'react-leaflet'
 import moment from 'moment'
 import { refreshMap } from '../../lib/map-helpers'
+import {
+  REPORTED,
+  SCHEDULED,
+  IN_PROGRESS,
+  LOW,
+  MEDIUM,
+  HIGH
+} from '../../lib/issue'
+import set from 'lodash/set'
 
 // import { getReportsCenter } from '../../lib/location'
 import { setMapCenter, setMapZoom, setPanning } from '../../store/actions'
@@ -17,20 +26,44 @@ const streetTileUrl =
 
 const StatusIcon = Leaflet.Icon.extend({
   options: {
-    iconSize: [40, 36],
+    iconSize: [36, 36],
     iconAnchor: [20, 18],
     popupAnchor: [0, -20]
   }
 })
 
-const prioIcons = {
-  low: new StatusIcon({ iconUrl: 'src/assets/prio0.png' }),
-  medium: new StatusIcon({ iconUrl: 'src/assets/prio1.png' }),
-  high: new StatusIcon({ iconUrl: 'src/assets/prio2.png' })
+const statusNames = {
+  [REPORTED]: 'reported',
+  [SCHEDULED]: 'scheduled',
+  [IN_PROGRESS]: 'in_progress'
 }
 
+function generateIcons () {
+  const icons = {}
+  const statuses = [REPORTED, SCHEDULED, IN_PROGRESS]
+  const priorities = [LOW, MEDIUM, HIGH]
+
+  statuses.forEach(status => {
+    priorities.forEach(priority => {
+      set(
+        icons,
+        [status, priority],
+        new StatusIcon({
+          iconUrl: `/src/assets/${statusNames[String(status)]}_${priority}.png`
+        })
+      )
+    })
+  })
+
+  return icons
+}
+
+const prioIcons = generateIcons()
+
+console.log(prioIcons)
+
 var userIcon = Leaflet.icon({
-  iconUrl: 'src/assets/user.png',
+  iconUrl: '/src/assets/user.png',
   iconSize: [30, 30],
   iconAnchor: [15, 15]
 })
@@ -82,7 +115,7 @@ const ReportsLayer = ({ reports }) => (
       <Marker
         key={report.id}
         position={report.location}
-        icon={prioIcons[report.priority]}
+        icon={prioIcons[report.status][report.priority]}
       >
         <ReportPopup report={report} />
       </Marker>
@@ -138,7 +171,14 @@ class MapView extends React.Component {
   }
 
   render () {
-    const { onClick, mapZoom, mapCenter, reports, userLocation, view } = this.props
+    const {
+      onClick,
+      mapZoom,
+      mapCenter,
+      reports,
+      userLocation,
+      view
+    } = this.props
     const creatingIssue = this.props.view === 'CREATE_ISSUE'
 
     return (
@@ -157,7 +197,7 @@ class MapView extends React.Component {
         <TileLayer url={this.getTileUrl()} />
         <ReportsLayer reports={reports} />
         <UserLayer userLocation={userLocation} />
-        { view === 'CREATE_ISSUE' && <PinLayer pinLocation={mapCenter} /> }
+        {view === 'CREATE_ISSUE' && <PinLayer pinLocation={mapCenter} />}
       </Map>
     )
   }

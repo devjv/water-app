@@ -1,10 +1,7 @@
 import React from 'react'
 import Radio, { RadioGroup } from 'material-ui/Radio'
 import { FormControlLabel } from 'material-ui/Form'
-
-const REPORTED = 0
-const SCHEDULED = 1
-const IN_PROGRESS = 2
+import { REPORTED, SCHEDULED, IN_PROGRESS } from '../../lib/issue'
 
 const IssueStatus = ({ value, disabled }) => (
   <RadioGroup aria-label='status' name='status' value={value} row>
