@@ -60,8 +60,6 @@ function generateIcons () {
 
 const prioIcons = generateIcons()
 
-console.log(prioIcons)
-
 var userIcon = Leaflet.icon({
   iconUrl: '/src/assets/user.png',
   iconSize: [30, 30],
