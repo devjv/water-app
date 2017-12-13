@@ -93,8 +93,8 @@ const IssueForm = ({
           </RadioGroup>
         </FormControl>
         <FormControl margin='normal' fullWidth>
-          <Button raised>
-            <Icon>add_a_photo</Icon> Add Picture
+          <Button raised onClick={() => window.alert('Photo added')}>
+            <Icon className={styles.iconLeft}>add_a_photo</Icon> Add Picture
           </Button>
         </FormControl>
       </Grid>
