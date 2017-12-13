@@ -2,6 +2,8 @@ import IssueForm from './issue-form'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { formAction, locateUserThunk, clearForm } from '../../store/actions'
+import { REPORTED } from '../../lib/issue'
+import { refreshMap } from '../../lib/map-helpers'
 
 const mapStateToProps = state => ({
   location: state.map.center,
@@ -11,9 +13,8 @@ const mapStateToProps = state => ({
 })
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { location } = stateProps
+  const { location, description, priority, photos } = stateProps
   const { dispatch } = dispatchProps
-  const { description, priority } = ownProps
 
   return {
     ...ownProps,
@@ -30,16 +31,16 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
             location,
             description,
             priority,
-            pictures: [] // TODO
+            status: REPORTED,
+            pictures: []
           }
         }
       })
       dispatch(clearForm)
       dispatch({ type: 'HOME' })
+      refreshMap()
     }
   }
 }
 
-export default compose(
-  connect(mapStateToProps, null, mergeProps)
-)(IssueForm)
+export default compose(connect(mapStateToProps, null, mergeProps))(IssueForm)

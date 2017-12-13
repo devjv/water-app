@@ -43,7 +43,7 @@ const IssueForm = ({
             value={humanizeLocation(location)}
             endAdornment={
               <InputAdornment position='end' onClick={onGetLocation}>
-                <IconButton mini>
+                <IconButton>
                   <Icon size={10}>my_location</Icon>
                 </IconButton>
               </InputAdornment>
@@ -54,6 +54,7 @@ const IssueForm = ({
           name='description'
           label='Issue Description'
           value={humanizeLocation(location)}
+          onChange={onChange}
           required
           fullWidth
           margin='normal'
@@ -61,6 +62,7 @@ const IssueForm = ({
           <FormHelperText>Issue Description</FormHelperText>
           <Input
             type='text'
+            name='description'
             value={description}
             placeholder='E.g. what is broken, symptoms'
           />
