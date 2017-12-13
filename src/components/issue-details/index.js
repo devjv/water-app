@@ -13,9 +13,9 @@ import DrawerTitle from '../drawer-title'
 const IssueDetails = ({ issue, onDelete }) => {
   const { location, description, status, canDelete, updatedAt } = issue
   return (
-    <div>
+    <div style={{ overflowX: 'hidden' }}>
       <DrawerTitle>Issue Details</DrawerTitle>
-      <Grid container justify='center'>
+      <Grid container justify='center' spacing={12}>
         <Grid item xs={10}>
           <FormControl margin='normal' fullWidth>
             <FormHelperText>Issue Location</FormHelperText>

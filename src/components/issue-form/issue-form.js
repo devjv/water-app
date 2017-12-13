@@ -35,7 +35,7 @@ const IssueForm = ({
 }) => (
   <form className={styles.form}>
     <DrawerTitle>Create New Issue</DrawerTitle>
-    <Grid container justify='center'>
+    <Grid container justify='center' spacing={12}>
       <Grid item xs={10}>
         <FormControl
           name='location'
